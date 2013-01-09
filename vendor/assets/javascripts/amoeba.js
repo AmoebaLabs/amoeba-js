@@ -1,6 +1,6 @@
 //= require_self
 //= require_tree ./lib
-//= require amoeba-core/app
+//= require amoeba/app
 
 ;var Amoeba = (function(){
   return {

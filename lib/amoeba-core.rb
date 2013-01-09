@@ -1,1 +1,0 @@
-require 'amoeba_core'

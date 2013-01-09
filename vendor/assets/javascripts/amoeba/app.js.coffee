@@ -1,3 +1,10 @@
+#= require_directory ./lib
+#= require_directory ./helpers
+#= require_directory ./routers
+#= require_directory ./models
+#= require_directory ./views
+#= require_self
+
 class Amoeba.App extends Module
   @include Amoeba.Events
 

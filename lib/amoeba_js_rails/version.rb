@@ -1,3 +1,3 @@
-module Amoeba
+module AmoebaJsRails
   VERSION = '0.0.1'
 end

@@ -1,1 +1,1 @@
-rvm gemset use amoeba-core --create
+rvm gemset use amoeba-js-core-rails --create
