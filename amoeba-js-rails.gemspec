@@ -32,12 +32,16 @@ Gem::Specification.new do |s|
     "test/test_amoeba-core.rb",
     "vendor/assets/javascripts/amoeba.js",
     "vendor/assets/javascripts/amoeba/app.js.coffee",
+    "vendor/assets/javascripts/amoeba/helpers.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/events.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/lookup_context.js.coffee",
-    "vendor/assets/javascripts/amoeba/lib/routeset.js.coffee",
+    "vendor/assets/javascripts/amoeba/lib/route_set.js.coffee",
     "vendor/assets/javascripts/amoeba/models/base.js.coffee",
     "vendor/assets/javascripts/amoeba/routers/base.js.coffee",
-    "vendor/assets/javascripts/amoeba/views/base.js.coffee"
+    "vendor/assets/javascripts/amoeba/views/base.js.coffee",
+    "vendor/assets/javascripts/lib/ext/coffeescript.js.coffee",
+    "vendor/assets/javascripts/lib/lib.js",
+    "vendor/assets/javascripts/lib/polyfills.js"
   ]
   s.homepage = "http://github.com/AmoebaConsulting/amoeba-js-rails"
   s.licenses = ["MIT"]
