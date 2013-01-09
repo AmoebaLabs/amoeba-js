@@ -1,5 +1,5 @@
 #= require_directory ./lib
-#= require_directory ./helpers
+#= require ./helpers
 #= require_directory ./routers
 #= require_directory ./models
 #= require_directory ./views
@@ -9,7 +9,7 @@ class Amoeba.App extends Module
   @include Amoeba.Events
 
   constructor: (@options = {}) ->
-    @helpers = new Amoeba.Helpers.Base()
+    @helpers = new Amoeba.Helpers()
     @routes = new Amoeba.RouteSet()
 
     @initialize()

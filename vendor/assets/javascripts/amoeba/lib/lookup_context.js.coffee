@@ -1,8 +1,9 @@
 class Amoeba.LookupContext
-  @VIEW_PATH = Amoeba.Views
+  constructor: (@viewPath) ->
+    throw "Cannot find view path" unless @viewPath
 
   find: (template) ->
-    view = @constructor.VIEW_PATH
+    view = @viewPath
     namespaces = template.split('.')
 
     (view = view[namespace]) for namespace in namespaces

@@ -3,7 +3,7 @@ class Amoeba.Routers.Base extends Module
 
   constructor: (@app) ->
     @helpers = @app.helpers
-    @lookupContext = new Amoeba.LookupContext()
+    @lookupContext = new Amoeba.LookupContext(@app.options.viewLookupPath)
     @initialize()
     @
 

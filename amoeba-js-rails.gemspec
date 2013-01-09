@@ -24,9 +24,20 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "amoeba-js-rails.gemspec",
+    "lib/amoeba-js-rails.rb",
+    "lib/amoeba_js_rails.rb",
+    "lib/amoeba_js_rails/version.rb",
     "test/helper.rb",
     "test/test_amoeba-core.rb",
-    "vendor/assets/javascripts/lib/coffeescript.js.coffee"
+    "vendor/assets/javascripts/amoeba.js",
+    "vendor/assets/javascripts/amoeba/app.js.coffee",
+    "vendor/assets/javascripts/amoeba/lib/events.js.coffee",
+    "vendor/assets/javascripts/amoeba/lib/lookup_context.js.coffee",
+    "vendor/assets/javascripts/amoeba/lib/routeset.js.coffee",
+    "vendor/assets/javascripts/amoeba/models/base.js.coffee",
+    "vendor/assets/javascripts/amoeba/routers/base.js.coffee",
+    "vendor/assets/javascripts/amoeba/views/base.js.coffee"
   ]
   s.homepage = "http://github.com/AmoebaConsulting/amoeba-js-rails"
   s.licenses = ["MIT"]
