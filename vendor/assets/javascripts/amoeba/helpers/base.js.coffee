@@ -1,6 +1,9 @@
-class Amoeba.Helpers.Base
+class Amoeba.Helpers
   constructor: ->
-    @extractHelper helper, methods for helper, methods of Amoeba.Helpers when helper isnt "Base"
+    @extractHelper helper, methods for helper, methods of @constructor.helpers
 
-  extractHelper: (helper, methods) ->
+  @extractHelper: (helper, methods) ->
     (@[name] = method.bind(@)) for name, method of methods
+
+  @register: (helper) ->
+    @helpers.push helper
