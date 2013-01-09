@@ -13,15 +13,14 @@ require 'rake'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "amoeba-core"
-  gem.homepage = "http://github.com/cbarton/amoeba-core"
+  gem.homepage = "http://github.com/AmoebaConsulting/amoeba-core"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "c.chris.b@gmail.com"
+  gem.summary = %Q{A lightweight JS framework designed to help organize your client-side code when working with Rails}
+  gem.description = %Q{"Amoeba.js is a lightweight JS framework designed to work with Rails
+                       (but potentially any MVC framework) and provide JS organization, routing, models, and views."}
+  gem.email = "sayhi@amoe.ba"
   gem.authors = ["Chris Barton"]
-  # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 
@@ -32,22 +31,4 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
-end
-
 task :default => :test
-
-require 'rdoc/task'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "amoeba-core #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
