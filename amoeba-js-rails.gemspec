@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Chris Barton"]
-  s.date = "2013-01-09"
+  s.authors = ["Chris Barton, Amoeba Consulting LLC."]
+  s.date = "2013-01-12"
   s.description = "Amoeba.js is a lightweight JS framework designed to work with Rails (but potentially any MVC framework) and provide JS organization, routing, models, and views."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -27,16 +27,18 @@ Gem::Specification.new do |s|
     "amoeba-js-rails.gemspec",
     "lib/amoeba-js-rails.rb",
     "lib/amoeba_js_rails.rb",
-    "lib/amoeba_js_rails/version.rb",
+    "lib/amoeba_js_rails/rails/engine.rb",
     "test/helper.rb",
     "test/test_amoeba-core.rb",
-    "vendor/assets/javascripts/amoeba.js",
+    "vendor/assets/javascripts/amoeba.js.coffee",
     "vendor/assets/javascripts/amoeba/app.js.coffee",
     "vendor/assets/javascripts/amoeba/helpers.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/events.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/lookup_context.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/route_set.js.coffee",
     "vendor/assets/javascripts/amoeba/models/base.js.coffee",
+    "vendor/assets/javascripts/amoeba/parser.js.coffee",
+    "vendor/assets/javascripts/amoeba/request.js.coffee",
     "vendor/assets/javascripts/amoeba/routers/base.js.coffee",
     "vendor/assets/javascripts/amoeba/views/base.js.coffee",
     "vendor/assets/javascripts/lib/ext/coffeescript.js.coffee",

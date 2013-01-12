@@ -1,5 +1,7 @@
 #= require_directory ./lib
 #= require ./helpers
+#= require ./parser
+#= require ./request
 #= require_directory ./routers
 #= require_directory ./models
 #= require_directory ./views

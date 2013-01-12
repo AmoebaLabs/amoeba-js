@@ -1,10 +1,5 @@
 module AmoebaJs
   module Rails
-    if defined?(Rails) && ::Rails.version >= "3.1"
-      class Engine < ::Rails::Engine
-      end
-    end
+    require 'amoeba_js_rails/rails/engine' if defined? Rails
   end
 end
-
-require 'amoeba_js_rails/version'

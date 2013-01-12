@@ -20,7 +20,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = "Amoeba.js is a lightweight JS framework designed to work with Rails" +
                     " (but potentially any MVC framework) and provide JS organization, routing, models, and views."
   gem.email = "sayhi@amoe.ba"
-  gem.authors = ["Chris Barton"]
+  gem.authors = ["Chris Barton, Amoeba Consulting LLC."]
 end
 Jeweler::RubygemsDotOrgTasks.new
 
