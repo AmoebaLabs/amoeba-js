@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "amoeba-js-rails"
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chris Barton, Amoeba Consulting LLC."]
-  s.date = "2013-01-12"
+  s.date = "2013-01-16"
   s.description = "Amoeba.js is a lightweight JS framework designed to work with Rails (but potentially any MVC framework) and provide JS organization, routing, models, and views."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -33,15 +33,11 @@ Gem::Specification.new do |s|
     "vendor/assets/javascripts/amoeba.js.coffee",
     "vendor/assets/javascripts/amoeba/app.js.coffee",
     "vendor/assets/javascripts/amoeba/helpers.js.coffee",
-    "vendor/assets/javascripts/amoeba/lib/events.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/lookup_context.js.coffee",
-    "vendor/assets/javascripts/amoeba/lib/route_set.js.coffee",
-    "vendor/assets/javascripts/amoeba/models/base.js.coffee",
-    "vendor/assets/javascripts/amoeba/parser.js.coffee",
-    "vendor/assets/javascripts/amoeba/request.js.coffee",
-    "vendor/assets/javascripts/amoeba/routers/base.js.coffee",
-    "vendor/assets/javascripts/amoeba/views/base.js.coffee",
-    "vendor/assets/javascripts/lib/ext/coffeescript.js.coffee",
+    "vendor/assets/javascripts/amoeba/lib/module.js.coffee",
+    "vendor/assets/javascripts/amoeba/model.js.coffee",
+    "vendor/assets/javascripts/amoeba/router.js.coffee",
+    "vendor/assets/javascripts/amoeba/view.js.coffee",
     "vendor/assets/javascripts/lib/lib.js",
     "vendor/assets/javascripts/lib/polyfills.js"
   ]
@@ -55,11 +51,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rails-backbone>, ["= 0.9.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
     else
+      s.add_dependency(%q<rails-backbone>, ["= 0.9.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     end
   else
+    s.add_dependency(%q<rails-backbone>, ["= 0.9.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
   end
 end

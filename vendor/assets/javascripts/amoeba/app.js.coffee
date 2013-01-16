@@ -1,24 +1,19 @@
-#= require_directory ./lib
-#= require ./helpers
-#= require ./parser
-#= require ./request
-#= require_directory ./routers
-#= require_directory ./models
-#= require_directory ./views
+#= require_tree .
 #= require_self
 
-class Amoeba.App extends Module
-  @include Amoeba.Events
+class Amoeba.App extends Amoeba.Module
+  @include Backbone.Events
 
-  constructor: (@options = {}) ->
+  constructor: (options = {}) ->
     @helpers = new Amoeba.Helpers()
-    @routes = new Amoeba.RouteSet()
+    @lookupContext = new Amoeba.LookupContext(options.viewPath)
 
-    @initialize()
-    @start() if @options.start
+    @initialize.apply(@, arguments)
     @
 
-  start: ->
-    @currentView = @routes.route(window.location.pathname).currentView
+  @start: (options = {}) ->
+    Amoeba.app = new @(options)
+    Backbone.history.start(_.pick(options, 'pushState', 'hashChange', 'silent', 'root'))
+    Amoeba.app
 
   initialize: ->

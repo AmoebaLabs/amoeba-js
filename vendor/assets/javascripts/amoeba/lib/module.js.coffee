@@ -1,6 +1,6 @@
 moduleKeywords = ['extended', 'included']
 
-class window.Module
+class Amoeba.Module
   @extend: (obj) ->
     for key, value of obj when key not in moduleKeywords
       @[key] = value
