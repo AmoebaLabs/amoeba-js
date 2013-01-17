@@ -1,4 +1,8 @@
-#= require_tree .
+#= require_tree ./lib
+#= require ./helpers
+#= require ./model
+#= require ./router
+#= require ./view
 #= require_self
 
 class Amoeba.App extends Amoeba.Module
