@@ -7,15 +7,14 @@ methodMap =
 
 originalSync = Backbone.sync
 Backbone.sync = (method, model, options = {}) ->
-  if not options.data and model and (method is 'create' or method is 'update' or method is 'patch')
-    options.attrs ?= {}
+  if model and (method is 'create' or method is 'update' or method is 'patch')
+    options.data ?= {}
     data = {}
     if model.paramRoot
       data[model.paramRoot] = model.toJSON(options)
     else
       data = model.toJSON(options)
-
     options.contentType = 'application/json'
-    options.data = JSON.stringify(_.extend(options.attrs, data))
+    options.data = JSON.stringify(_.extend(options.data, data))
 
   originalSync(method, model, options)
