@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Chris Barton, Amoeba Consulting LLC."]
-  s.date = "2013-01-17"
+  s.date = "2013-01-23"
   s.description = "Amoeba.js is a lightweight JS framework designed to work with Rails (but potentially any MVC framework) and provide JS organization, routing, models, and views."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -36,9 +36,13 @@ Gem::Specification.new do |s|
     "vendor/assets/javascripts/amoeba/lib/lookup_context.js.coffee",
     "vendor/assets/javascripts/amoeba/lib/module.js.coffee",
     "vendor/assets/javascripts/amoeba/model.js.coffee",
+    "vendor/assets/javascripts/amoeba/paginated_collection.js.coffee",
     "vendor/assets/javascripts/amoeba/router.js.coffee",
     "vendor/assets/javascripts/amoeba/sync.js.coffee",
+    "vendor/assets/javascripts/amoeba/template.js.coffee",
     "vendor/assets/javascripts/amoeba/view.js.coffee",
+    "vendor/assets/javascripts/amoeba/view/collection.js.coffee",
+    "vendor/assets/javascripts/amoeba/view/scrollable_collection.js.coffee",
     "vendor/assets/javascripts/lib/lib.js",
     "vendor/assets/javascripts/lib/polyfills.js"
   ]
