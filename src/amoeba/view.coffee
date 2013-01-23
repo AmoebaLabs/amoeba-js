@@ -1,6 +1,3 @@
-#= require_self
-#= require_tree ./view
-
 class Amoeba.View extends Backbone.View
   constructor: (options = {}) ->
     @locals = options.locals

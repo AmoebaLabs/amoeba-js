@@ -1,11 +1,5 @@
 #= require_tree ./lib
 #= require ./helpers
-#= require ./model
-#= require ./paginated_collection
-#= require ./router
-#= require ./template
-#= require ./view
-#= require_self
 
 class Amoeba.App extends Amoeba.Module
   @include Backbone.Events

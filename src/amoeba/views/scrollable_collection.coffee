@@ -1,3 +1,5 @@
+#= require ../view
+
 class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
   loading: false
   padding: 100

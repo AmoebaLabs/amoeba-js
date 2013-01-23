@@ -1,3 +1,5 @@
+#= require ../view
+
 class Amoeba.View.Collection extends Amoeba.View
   subviews: []
   constructor: (options = {}) ->
