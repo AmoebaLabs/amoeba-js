@@ -8,13 +8,13 @@
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
     <script>
+      mocha.suite.bail(false);
       mocha.ui('bdd');
       mocha.reporter('html');
       var expect = chai.expect,
           should = chai.should(),
           assert = chai.assert;
     </script>
-    <script src="test/mycode.js"></script>
     <script>
       if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
       else { mocha.run(); }

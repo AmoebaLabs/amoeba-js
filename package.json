@@ -1,7 +1,7 @@
 {
   "name": "amoeba",
   "version": "0.2.0",
-  "description": "Amoeba.js is a lightweight JS framework built on top of Backbone JS providing some more tools.",
+  "description": "Amoeba.js is a lightweight JS MVC framework built extending Backbone JS giving some extra help.",
   "main": "amoeba.js",
   "scripts": {
     "test": "grunt mocha"
@@ -10,21 +10,21 @@
     "type": "git",
     "url": "git://github.com/AmoebaConsulting/amoeba-js-rails.git"
   },
-  "author": "Chris Barton",
+  "author": "Amoeba Consulting, LLC.",
   "license": "MIT",
   "dependencies": {
-    "underscore": "latest",
-    "backbone": "latest"
+    "underscore": "1.4.3",
+    "backbone": "0.9.10"
   },
   "devDependencies": {
-    "grunt": "latest",
-    "grunt-coffee": "latest",
-    "grunt-growl": "latest",
-    "grunt-barkeep": "latest",
-    "grunt-contrib-copy": "latest",
+    "grunt": "0.3.17",
+    "grunt-coffee": "0.0.6",
+    "grunt-growl": "0.1.3",
+    "grunt-barkeep": "0.3.10",
+    "grunt-contrib-copy": "0.3.2",
     "mocha": "latest",
     "chai": "latest",
     "mocha-phantomjs": "latest",
-    "snockets": "latest"
+    "snockets": "1.3.8"
   }
 }

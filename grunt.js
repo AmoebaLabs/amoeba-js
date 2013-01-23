@@ -22,7 +22,7 @@ module.exports = function(grunt) {
     },
     coffee: {
       specs: {
-        src : 'spec/coffeescripts/*.coffee',
+        src : 'spec/coffeescripts/**/*.coffee',
         dest: 'spec/javascripts'
       }
     },
@@ -67,10 +67,18 @@ module.exports = function(grunt) {
 
   grunt.registerTask('mocha', 'run mocha-phantomjs', function () {
     var done = this.async();
-    require('child_process').exec('mocha-phantomjs ./tests/index.html', function (err, stdout) {
-      grunt.log.write(stdout);
-      done(err);
+    var mocha = grunt.util.spawn({
+      cmd: 'node',
+      args: [
+        'node_modules/mocha-phantomjs/bin/mocha-phantomjs',
+        './spec/index.html'
+      ]
+    }, function(err, result, code){
+      done(!code);
     });
+
+    mocha.stdout.pipe(process.stdout);
+    mocha.stderr.pipe(process.stderr);
   });
 
   grunt.registerTask('default', grunt.config('watch.tasks'));
