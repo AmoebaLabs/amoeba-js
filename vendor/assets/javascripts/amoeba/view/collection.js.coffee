@@ -30,7 +30,10 @@ class Amoeba.View.Collection extends Amoeba.View
 
   add: (model) ->
     subview = @extractSubView(model)
-    @$el.append(subview.render().el) if @rendered
+
+    if @rendered
+      @$el.append(subview.render().el)
+      @trigger('render')
 
   remove: (model) ->
     subviewToRemove = _.select(@subviews, (subview) ->
