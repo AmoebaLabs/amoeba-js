@@ -22,13 +22,17 @@ module.exports = function(grunt) {
     },
     coffee: {
       specs: {
-        src : 'spec/coffeescripts/**/*.coffee',
-        dest: 'spec/javascripts'
+        src : 'spec/coffeescripts/**/*_spec.coffee',
+        dest: 'spec/javascripts',
+        options: {
+          preserve_dirs: true,
+          base_path: 'spec/coffeescripts'
+        }
       }
     },
     watch: {
-      files: ['<config:coffee.specs.src>'],
-      tasks: 'snockets growl:snockets coffee growl:coffee mocha growl:mocha min copy'
+      files: ['src/**/*.coffee', 'spec/index.html', '<config:coffee.specs.src>'],
+      tasks: 'default'
     },
     growl: {
       snockets: {
@@ -39,9 +43,13 @@ module.exports = function(grunt) {
         title: 'Specs',
         message: 'Compiled successfully'
       },
-      mocha: {
+      mochaPassed: {
         title: 'Mocha',
         message: 'Tests passed successfully'
+      },
+      mochaFailed: {
+        title: 'Mocha',
+        message: 'Tests failed'
       }
     },
     copy: {
@@ -74,12 +82,12 @@ module.exports = function(grunt) {
         './spec/index.html'
       ]
     }, function(err, result, code){
-      done(!code);
+      done(!code)
     });
 
     mocha.stdout.pipe(process.stdout);
     mocha.stderr.pipe(process.stderr);
   });
 
-  grunt.registerTask('default', grunt.config('watch.tasks'));
+  grunt.registerTask('default', 'snockets growl:snockets coffee growl:coffee mocha min copy');
 };

@@ -5,19 +5,44 @@
   </head>
   <body>
     <div id="mocha"></div>
+    <script src="support/jquery-1.9.0.js"></script>
+    <script src="../node_modules/underscore/underscore.js"></script>
+    <script src="../node_modules/backbone/backbone.js"></script>
+
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
+    <script src="support/sinon-1.5.2.js"></script>
+    <script src="support/sinon-chai.js"></script>
+    <script src="support/chai-jquery.js"></script>
+
     <script>
-      mocha.suite.bail(false);
-      mocha.ui('bdd');
-      mocha.reporter('html');
+      mocha.setup({
+        ui: 'bdd',
+        reporter: 'html',
+        bail: false,
+        ignoreLeaks: true
+      });
+
       var expect = chai.expect,
           should = chai.should(),
           assert = chai.assert;
     </script>
+
+    <script src="../amoeba.js"></script>
+    <script src="javascripts/lib/polyfills_spec.js"></script>
+    <script src="javascripts/amoeba/app_spec.js"></script>
+    <script src="javascripts/amoeba/helpers_spec.js"></script>
+    <script src="javascripts/amoeba/router_spec.js"></script>
+    <script src="javascripts/amoeba/view_spec.js"></script>
+    <script src="javascripts/amoeba/lib/lookup_context_spec.js"></script>
+    <script src="javascripts/amoeba/lib/module_spec.js"></script>
+
     <script>
-      if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
-      else { mocha.run(); }
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
     </script>
   </body>
 </html>

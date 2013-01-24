@@ -1,4 +1,6 @@
 class Amoeba.Helpers
+  @helpers: []
+
   constructor: ->
     @extractHelper methods for methods in @constructor.helpers
 
@@ -6,4 +8,4 @@ class Amoeba.Helpers
     (@[name] = method.bind(@)) for name, method of methods
 
   @register: (helper) ->
-    (@helpers ?= []).push helper
+    @helpers.push helper

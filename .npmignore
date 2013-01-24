@@ -1,3 +1,7 @@
 lib/
 vendor/
 spec/
+Rakefile
+.gemspec
+Gemfile*
+.rvmrc
