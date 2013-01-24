@@ -9,12 +9,19 @@ class Amoeba.View.Collection extends Amoeba.View
     @collection.on('add', @add.bind(@))
     @collection.on('remove', @remove.bind(@))
 
-  render: ->
+  render: =>
+    return if @rendered
+
     @extractSubViews()
     @$el.html(@renderSubViews())
     @rendered = true
     @trigger('render')
     @
+
+  refresh: ->
+    @subviews = []
+    @rendered = false
+    @collection.fetch(success: @render, silent: true)
 
   extractSubViews: ->
     @collection.each @extractSubView

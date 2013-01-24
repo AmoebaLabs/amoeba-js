@@ -81,24 +81,6 @@
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Amoeba.Model = (function(_super) {
-
-    __extends(Model, _super);
-
-    function Model() {
-      return Model.__super__.constructor.apply(this, arguments);
-    }
-
-    return Model;
-
-  })(Backbone.Model);
-
-}).call(this);
-
-(function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
   Amoeba.PaginatedCollection = (function(_super) {
 
     __extends(PaginatedCollection, _super);
@@ -108,6 +90,11 @@
     }
 
     PaginatedCollection.prototype.urlPageQuery = 'page';
+
+    PaginatedCollection.prototype.reset = function() {
+      this.nextPage = void 0;
+      return PaginatedCollection.__super__.reset.apply(this, arguments);
+    };
 
     PaginatedCollection.prototype.hasMorePages = function() {
       return _.result(this, 'nextPage') != null;
@@ -119,6 +106,9 @@
         options = {};
       }
       url = _.result(this, 'url');
+      if (!url) {
+        throw 'No url specified';
+      }
       query = "" + this.urlPageQuery + "=" + (_.result(this, 'nextPage'));
       appendChar = !~url.indexOf('?') ? '?' : '&';
       _.extend(options, {
@@ -284,6 +274,8 @@
       }
       this.extractSubView = __bind(this.extractSubView, this);
 
+      this.render = __bind(this.render, this);
+
       if ((_ref = options.subView) == null) {
         options.subView = {};
       }
@@ -293,11 +285,23 @@
     }
 
     Collection.prototype.render = function() {
+      if (this.rendered) {
+        return;
+      }
       this.extractSubViews();
       this.$el.html(this.renderSubViews());
       this.rendered = true;
       this.trigger('render');
       return this;
+    };
+
+    Collection.prototype.refresh = function() {
+      this.subviews = [];
+      this.rendered = false;
+      return this.collection.fetch({
+        success: this.render,
+        silent: true
+      });
     };
 
     Collection.prototype.extractSubViews = function() {

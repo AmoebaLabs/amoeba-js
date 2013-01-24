@@ -2,7 +2,6 @@
 #= require ./namespace
 #= require amoeba/sync
 #= require amoeba/helpers
-#= require amoeba/model
 #= require amoeba/paginated_collection
 #= require amoeba/router
 #= require amoeba/template
