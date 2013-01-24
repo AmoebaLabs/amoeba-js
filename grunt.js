@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      files: ['<config:coffee.specs.src>', '<config:coffee.dist.src>'],
+      files: ['<config:coffee.specs.src>'],
       tasks: 'snockets growl:snockets coffee growl:coffee mocha growl:mocha min copy'
     },
     growl: {

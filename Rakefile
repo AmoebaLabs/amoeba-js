@@ -14,7 +14,7 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   gem.name = "amoeba-js-rails"
-  gem.homepage = "http://github.com/AmoebaConsulting/amoeba-js-rails"
+  gem.homepage = "http://github.com/AmoebaConsulting/amoeba-js"
   gem.license = "MIT"
   gem.summary = %Q{A lightweight JS MVC framework extending Backbone JS.}
   gem.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."

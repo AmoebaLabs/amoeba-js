@@ -1,4 +1,4 @@
-#= require ../view
+#= require ./collection
 
 class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
   loading: false

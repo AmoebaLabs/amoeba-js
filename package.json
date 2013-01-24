@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/AmoebaConsulting/amoeba-js-rails.git"
+    "url": "git://github.com/AmoebaConsulting/amoeba-js.git"
   },
   "author": "Amoeba Consulting, LLC.",
   "license": "MIT",

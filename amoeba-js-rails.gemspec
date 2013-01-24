@@ -8,15 +8,16 @@ Gem::Specification.new do |s|
   s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Chris Barton, Amoeba Consulting LLC."]
-  s.date = "2013-01-23"
-  s.description = "Amoeba.js is a lightweight JS framework designed to work with Rails (but potentially any MVC framework) and provide JS organization, routing, models, and views."
+  s.authors = ["Amoeba Consulting, LLC."]
+  s.date = "2013-01-24"
+  s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
   ]
   s.files = [
+    ".npmignore",
     ".rvmrc",
     "Gemfile",
     "Gemfile.lock",
@@ -25,32 +26,37 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "amoeba-js-rails.gemspec",
+    "amoeba.js",
+    "amoeba.min.js",
+    "grunt.js",
     "lib/amoeba-js-rails.rb",
-    "lib/amoeba_js_rails.rb",
-    "lib/amoeba_js_rails/rails/engine.rb",
-    "test/helper.rb",
-    "test/test_amoeba-core.rb",
-    "vendor/assets/javascripts/amoeba.js.coffee",
-    "vendor/assets/javascripts/amoeba/app.js.coffee",
-    "vendor/assets/javascripts/amoeba/helpers.js.coffee",
-    "vendor/assets/javascripts/amoeba/lib/lookup_context.js.coffee",
-    "vendor/assets/javascripts/amoeba/lib/module.js.coffee",
-    "vendor/assets/javascripts/amoeba/model.js.coffee",
-    "vendor/assets/javascripts/amoeba/paginated_collection.js.coffee",
-    "vendor/assets/javascripts/amoeba/router.js.coffee",
-    "vendor/assets/javascripts/amoeba/sync.js.coffee",
-    "vendor/assets/javascripts/amoeba/template.js.coffee",
-    "vendor/assets/javascripts/amoeba/view.js.coffee",
-    "vendor/assets/javascripts/amoeba/view/collection.js.coffee",
-    "vendor/assets/javascripts/amoeba/view/scrollable_collection.js.coffee",
-    "vendor/assets/javascripts/lib/lib.js",
-    "vendor/assets/javascripts/lib/polyfills.js"
+    "lib/amoeba-js-rails/rails/engine.rb",
+    "package.json",
+    "spec/index.html",
+    "src/amoeba.coffee",
+    "src/amoeba/app.coffee",
+    "src/amoeba/helpers.coffee",
+    "src/amoeba/lib/lookup_context.coffee",
+    "src/amoeba/lib/module.coffee",
+    "src/amoeba/model.coffee",
+    "src/amoeba/paginated_collection.coffee",
+    "src/amoeba/router.coffee",
+    "src/amoeba/sync.coffee",
+    "src/amoeba/template.coffee",
+    "src/amoeba/view.coffee",
+    "src/amoeba/views/collection.coffee",
+    "src/amoeba/views/scrollable_collection.coffee",
+    "src/lib/polyfills.js",
+    "src/namespace.coffee",
+    "vendor/assets/javascripts/amoeba-js.js",
+    "vendor/assets/javascripts/amoeba.js",
+    "vendor/assets/javascripts/amoeba.min.js"
   ]
-  s.homepage = "http://github.com/AmoebaConsulting/amoeba-js-rails"
+  s.homepage = "http://github.com/AmoebaConsulting/amoeba-js"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.24"
-  s.summary = "A lightweight JS framework designed to help organize your client-side code when working with Rails"
+  s.summary = "A lightweight JS MVC framework extending Backbone JS."
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
@@ -58,13 +64,16 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rails-backbone>, ["= 0.9.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
+      s.add_development_dependency(%q<terminal-notifier>, ["= 1.4.2"])
     else
       s.add_dependency(%q<rails-backbone>, ["= 0.9.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
+      s.add_dependency(%q<terminal-notifier>, ["= 1.4.2"])
     end
   else
     s.add_dependency(%q<rails-backbone>, ["= 0.9.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
+    s.add_dependency(%q<terminal-notifier>, ["= 1.4.2"])
   end
 end
 
