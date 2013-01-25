@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amoeba Consulting, LLC."]
-  s.date = "2013-01-24"
+  s.date = "2013-01-25"
   s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -38,7 +38,6 @@ Gem::Specification.new do |s|
     "spec/coffeescripts/amoeba/lib/module_spec.coffee",
     "spec/coffeescripts/amoeba/paginated_collection_spec.coffee",
     "spec/coffeescripts/amoeba/router_spec.coffee",
-    "spec/coffeescripts/amoeba/template_spec.js.coffee",
     "spec/coffeescripts/amoeba/view_spec.coffee",
     "spec/coffeescripts/lib/polyfills_spec.coffee",
     "spec/index.html",

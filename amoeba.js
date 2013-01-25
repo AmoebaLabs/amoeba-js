@@ -7,7 +7,7 @@
 }).call(this);
 
 (function() {
-  var methodMap, originalSync;
+  var methodMap;
 
   methodMap = {
     create: 'POST',
@@ -17,7 +17,7 @@
     read: 'GET'
   };
 
-  originalSync = Backbone.sync;
+  Backbone.originalSync = Backbone.sync;
 
   Backbone.sync = function(method, model, options) {
     var data, _ref;
@@ -37,7 +37,7 @@
       options.contentType = 'application/json';
       options.data = JSON.stringify(_.extend(options.data, data));
     }
-    return originalSync(method, model, options);
+    return Backbone.originalSync(method, model, options);
   };
 
 }).call(this);
@@ -194,7 +194,9 @@
             item = _ref1[_i];
             _results.push((function(item) {
               var object;
-              object = _.extend({}, item, options.locals);
+              object = {};
+              object[template] = item;
+              _.extend(object, options.locals);
               return _this._render(template, object);
             })(item));
           }

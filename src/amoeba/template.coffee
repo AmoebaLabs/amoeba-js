@@ -8,7 +8,9 @@ class Amoeba.Template
     if options.collection
       result = for item in options.collection
         do (item) =>
-          object = _.extend({}, item, options.locals)
+          object = {}
+          object[template] = item
+          _.extend(object, options.locals)
           @_render(template, object)
       result.join('')
     else

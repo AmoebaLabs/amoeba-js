@@ -1,0 +1,1 @@
+describe 'Amoeba.View.Collection', ->
