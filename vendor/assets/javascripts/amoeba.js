@@ -152,9 +152,6 @@
       if (options == null) {
         options = {};
       }
-      if (this.currentView != null) {
-        throw "Render already called with " + this.currentView;
-      }
       view = Amoeba.app.lookupContext.find(partial);
       return Amoeba.app.currentView = this.currentView = new view(options);
     };
@@ -247,6 +244,7 @@
       if (this.template) {
         this.template = new Amoeba.Template(this.template);
       }
+      this.helpers = Amoeba.app.helpers;
       View.__super__.constructor.apply(this, arguments);
     }
 
@@ -402,6 +400,20 @@
 
 (function() {
 
+  Backbone.History.prototype.hasUrl = function(fragment) {
+    return _.any(this.handlers, function(handler) {
+      if (handler.route.test(fragment)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  };
+
+}).call(this);
+
+(function() {
+
   Amoeba.LookupContext = (function() {
 
     function LookupContext(viewPath) {
@@ -473,7 +485,8 @@
 }).call(this);
 
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   Amoeba.App = (function(_super) {
@@ -482,10 +495,28 @@
 
     App.include(Backbone.Events);
 
+    App.settings = {
+      linkSelector: 'a'
+    };
+
+    /*
+        new Amoeba.App(options) where options are:
+          viewPath = The base object under which to find your app's views
+          templatePath = The base object under which to find your app's templates
+          hijackRequests (default: true) = Hijack <a> click events to fire associated routes
+    */
+
+
     function App(options) {
       if (options == null) {
         options = {};
       }
+      this.unbindRequestListener = __bind(this.unbindRequestListener, this);
+
+      this.bindRequestListner = __bind(this.bindRequestListner, this);
+
+      this.requestHandler = __bind(this.requestHandler, this);
+
       this.helpers = new Amoeba.Helpers();
       if (options.viewPath) {
         this.lookupContext = new Amoeba.LookupContext(options.viewPath);
@@ -493,7 +524,10 @@
       if (options.templatePath) {
         this.templatePath = options.templatePath;
       }
-      this.initialize.apply(this, arguments);
+      this.hijackRequests = options.hijackRequests === false ? false : true;
+      if (this.hijackRequests) {
+        this.bindRequestListner();
+      }
       this;
 
     }
@@ -503,11 +537,22 @@
         options = {};
       }
       Amoeba.app = new this(options);
+      Amoeba.app.initialize(options);
       Backbone.history.start(_.pick(options, 'pushState', 'hashChange', 'silent', 'root'));
       return Amoeba.app;
     };
 
     App.prototype.initialize = function() {};
+
+    App.prototype.requestHandler = function(e) {};
+
+    App.prototype.bindRequestListner = function() {
+      return $(document).on(this.constructor.settings.linkSelector, 'click', this.requestHandler);
+    };
+
+    App.prototype.unbindRequestListener = function() {
+      return $(document).off(this.constructor.settings.linkSelector, 'click', this.requestHandler);
+    };
 
     return App;
 

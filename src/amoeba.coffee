@@ -9,4 +9,5 @@
 #= require amoeba/view
 #= require_tree amoeba/views
 #= require_tree amoeba/lib
+#= require amoeba/history
 #= require amoeba/app
