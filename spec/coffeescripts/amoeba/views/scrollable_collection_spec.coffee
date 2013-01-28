@@ -1,0 +1,2 @@
+describe 'Amoeba.View.ScrollableCollection', ->
+

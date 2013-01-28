@@ -3,6 +3,7 @@
 class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
   loading: false
   padding: 100
+
   constructor: ->
     super
     $(window).on("scroll.#{@cid}", @onScroll)
@@ -10,6 +11,11 @@ class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
   onScroll: =>
     return true if not @rendered or @loading
 
+    if @scrolledToBottom() and @collection.hasMorePages()
+      @loading = true
+      @collection.fetchNextPage success: @onLoad, error: @onLoad
+
+  scrolledToBottom: ->
     winHeight = $(window).height()
     scrollTop = $(window).scrollTop()
     winBottom = winHeight + scrollTop
@@ -18,9 +24,7 @@ class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
     elOffset = @$el.offset().top
     elBottom = elHeight + elOffset
 
-    if elBottom + @padding < winBottom and @collection.hasMorePages()
-      @loading = true
-      @collection.fetchNextPage success: @onLoad, error: @onLoad
+    elBottom + @padding < winBottom
 
   onLoad: =>
     @loading = false

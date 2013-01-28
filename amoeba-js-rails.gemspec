@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amoeba Consulting, LLC."]
-  s.date = "2013-01-25"
+  s.date = "2013-01-28"
   s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -38,7 +38,11 @@ Gem::Specification.new do |s|
     "spec/coffeescripts/amoeba/lib/module_spec.coffee",
     "spec/coffeescripts/amoeba/paginated_collection_spec.coffee",
     "spec/coffeescripts/amoeba/router_spec.coffee",
+    "spec/coffeescripts/amoeba/sync_spec.coffee",
+    "spec/coffeescripts/amoeba/template_spec.coffee",
     "spec/coffeescripts/amoeba/view_spec.coffee",
+    "spec/coffeescripts/amoeba/views/collection_spec.coffee",
+    "spec/coffeescripts/amoeba/views/scrollable_collection_spec.coffee",
     "spec/coffeescripts/lib/polyfills_spec.coffee",
     "spec/index.html",
     "spec/javascripts/amoeba/app_spec.js",
@@ -47,7 +51,11 @@ Gem::Specification.new do |s|
     "spec/javascripts/amoeba/lib/module_spec.js",
     "spec/javascripts/amoeba/paginated_collection_spec.js",
     "spec/javascripts/amoeba/router_spec.js",
+    "spec/javascripts/amoeba/sync_spec.js",
+    "spec/javascripts/amoeba/template_spec.js",
     "spec/javascripts/amoeba/view_spec.js",
+    "spec/javascripts/amoeba/views/collection_spec.js",
+    "spec/javascripts/amoeba/views/scrollable_collection_spec.js",
     "spec/javascripts/lib/polyfills_spec.js",
     "spec/javascripts/src/amoeba.js",
     "spec/javascripts/src/amoeba/app.js",

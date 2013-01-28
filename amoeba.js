@@ -267,8 +267,6 @@
 
     __extends(Collection, _super);
 
-    Collection.prototype.subviews = [];
-
     function Collection(options) {
       var _ref;
       if (options == null) {
@@ -278,6 +276,7 @@
 
       this.render = __bind(this.render, this);
 
+      this.subviews = [];
       if ((_ref = options.subView) == null) {
         options.subView = {};
       }
@@ -300,10 +299,11 @@
     Collection.prototype.refresh = function() {
       this.subviews = [];
       this.rendered = false;
-      return this.collection.fetch({
+      this.collection.fetch({
         success: this.render,
         silent: true
       });
+      return this;
     };
 
     Collection.prototype.extractSubViews = function() {
@@ -343,9 +343,11 @@
       subviewToRemove = _.select(this.subviews, function(subview) {
         return subview.model.id === model.id;
       })[0];
-      this.subviews = _.without(this.subviews, subviewToRemove);
-      if (this.rendered) {
-        return subviewToRemove.$el.remove();
+      if (subviewToRemove) {
+        this.subviews = _.without(this.subviews, subviewToRemove);
+        if (this.rendered) {
+          return subviewToRemove.$el.remove();
+        }
       }
     };
 
@@ -377,23 +379,27 @@
     }
 
     ScrollableCollection.prototype.onScroll = function() {
-      var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
       if (!this.rendered || this.loading) {
         return true;
       }
-      winHeight = $(window).height();
-      scrollTop = $(window).scrollTop();
-      winBottom = winHeight + scrollTop;
-      elHeight = this.$el.height();
-      elOffset = this.$el.offset().top;
-      elBottom = elHeight + elOffset;
-      if (elBottom + this.padding < winBottom && this.collection.hasMorePages()) {
+      if (this.scrolledToBottom() && this.collection.hasMorePages()) {
         this.loading = true;
         return this.collection.fetchNextPage({
           success: this.onLoad,
           error: this.onLoad
         });
       }
+    };
+
+    ScrollableCollection.prototype.scrolledToBottom = function() {
+      var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
+      winHeight = $(window).height();
+      scrollTop = $(window).scrollTop();
+      winBottom = winHeight + scrollTop;
+      elHeight = this.$el.height();
+      elOffset = this.$el.offset().top;
+      elBottom = elHeight + elOffset;
+      return elBottom + this.padding < winBottom;
     };
 
     ScrollableCollection.prototype.onLoad = function() {
@@ -412,18 +418,58 @@
 
     function LookupContext(viewPath) {
       this.viewPath = viewPath;
-      if (!this.viewPath) {
-        throw "Cannot find view path";
-      }
     }
 
-    LookupContext.prototype.find = function(template) {
-      var namespace, namespaces, view, _i, _len;
-      view = this.viewPath;
-      namespaces = template.split('.');
+    LookupContext.prototype.getNamespaces = function(path) {
+      return path.split('.');
+    };
+
+    LookupContext.prototype.recurse = function(base, path) {
+      var namespace, namespaces, _i, _len;
+      if (!base) {
+        return void 0;
+      }
+      if (!path.length) {
+        return base;
+      }
+      namespaces = this.getNamespaces(path);
       for (_i = 0, _len = namespaces.length; _i < _len; _i++) {
         namespace = namespaces[_i];
-        view = view[namespace];
+        if (base[namespace]) {
+          base = base[namespace];
+        } else {
+          base = void 0;
+          break;
+        }
+      }
+      return base;
+    };
+
+    LookupContext.prototype.findFromViewPath = function(viewPath, context) {
+      var base, namespaces;
+      if (context == null) {
+        context = window;
+      }
+      namespaces = this.getNamespaces(viewPath);
+      base = namespaces.shift();
+      return this.recurse(context[base], namespaces.join('.'));
+    };
+
+    LookupContext.prototype.find = function(template, context) {
+      var view;
+      if (!template) {
+        throw "A template is required";
+      }
+      if (typeof template !== 'string') {
+        return template;
+      }
+      if (this.viewPath) {
+        view = this.recurse(this.viewPath, template);
+      } else {
+        view = this.findFromViewPath(template, context);
+      }
+      if (!view) {
+        throw "Cannot find template " + template;
       }
       return view;
     };
@@ -493,9 +539,7 @@
         options = {};
       }
       this.helpers = new Amoeba.Helpers();
-      if (options.viewPath) {
-        this.lookupContext = new Amoeba.LookupContext(options.viewPath);
-      }
+      this.lookupContext = new Amoeba.LookupContext(options.viewPath);
       if (options.templatePath) {
         this.templatePath = options.templatePath;
       }

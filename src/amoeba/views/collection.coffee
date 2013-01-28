@@ -1,8 +1,8 @@
 #= require ../view
 
 class Amoeba.View.Collection extends Amoeba.View
-  subviews: []
   constructor: (options = {}) ->
+    @subviews = []
     options.subView ?= {}
     super(options)
 
@@ -22,6 +22,7 @@ class Amoeba.View.Collection extends Amoeba.View
     @subviews = []
     @rendered = false
     @collection.fetch(success: @render, silent: true)
+    @
 
   extractSubViews: ->
     @collection.each @extractSubView
@@ -48,6 +49,7 @@ class Amoeba.View.Collection extends Amoeba.View
     subviewToRemove = _.select(@subviews, (subview) ->
       subview.model.id is model.id
     )[0]
-    @subviews = _.without @subviews, subviewToRemove
 
-    subviewToRemove.$el.remove() if @rendered
+    if subviewToRemove
+      @subviews = _.without @subviews, subviewToRemove
+      subviewToRemove.$el.remove() if @rendered
