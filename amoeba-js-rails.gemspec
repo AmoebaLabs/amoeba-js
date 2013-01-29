@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amoeba Consulting, LLC."]
-  s.date = "2013-01-28"
+  s.date = "2013-01-29"
   s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
