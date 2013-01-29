@@ -43,8 +43,6 @@ describe('Amoeba.View.Collection', function() {
       return ParentView.__super__.constructor.apply(this, arguments);
     }
 
-    ParentView.prototype.subView = SubView;
-
     return ParentView;
 
   })(Amoeba.View.Collection);
@@ -55,7 +53,10 @@ describe('Amoeba.View.Collection', function() {
     });
     collection = new TestCollection([model]);
     return view = new ParentView({
-      collection: collection
+      collection: collection,
+      subView: {
+        partial: SubView
+      }
     });
   });
   describe('#render', function() {

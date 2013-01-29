@@ -11,13 +11,15 @@ describe 'Amoeba.View.Collection', ->
       @
 
   class ParentView extends Amoeba.View.Collection
-    subView: SubView
 
   beforeEach ->
     Amoeba.App.start()
     model = new Backbone.Model(id: 1)
     collection = new TestCollection([model])
-    view = new ParentView(collection: collection)
+    view = new ParentView
+      collection: collection
+      subView:
+        partial: SubView
 
   describe '#render', ->
     it 'should load up the subviews', ->

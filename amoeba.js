@@ -268,7 +268,7 @@
     __extends(Collection, _super);
 
     function Collection(options) {
-      var _ref;
+      var _ref, _ref1;
       if (options == null) {
         options = {};
       }
@@ -279,6 +279,9 @@
       this.subviews = [];
       if ((_ref = options.subView) == null) {
         options.subView = {};
+      }
+      if ((_ref1 = this.subView) == null) {
+        this.subView = options.subView.partial;
       }
       Collection.__super__.constructor.call(this, options);
       this.collection.on('add', this.add.bind(this));

@@ -4,6 +4,7 @@ class Amoeba.View.Collection extends Amoeba.View
   constructor: (options = {}) ->
     @subviews = []
     options.subView ?= {}
+    @subView ?= options.subView.partial
     super(options)
 
     @collection.on('add', @add.bind(@))
