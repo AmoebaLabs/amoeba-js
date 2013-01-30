@@ -5,3 +5,4 @@ Rakefile
 .gemspec
 Gemfile*
 .rvmrc
+docs/
