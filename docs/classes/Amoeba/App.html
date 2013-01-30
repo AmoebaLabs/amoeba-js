@@ -2,7 +2,7 @@
 <html>
   <head>
   <meta charset='UTF-8'>
-  <title>&lt;%= pkg.description %&gt;</title>
+  <title>Amoeba.js Documentation</title>
   <link rel='stylesheet' href='..&#47;..&#47;assets/codo.css' type='text/css'>
   <script src='..&#47;..&#47;assets/codo.js'></script>
   <script src='..&#47;..&#47;assets/search_data.js'></script>
@@ -22,7 +22,7 @@
     <div id='base' data-path='..&#47;..&#47;'></div>
 <div id='header'>
   <div id='menu'>
-    <a href='..&#47;..&#47;README.rdoc.html' title='&lt;%= pkg.name %&gt;'>&lt;%= pkg.name %&gt;</a>
+    <a href='..&#47;..&#47;README.md.html' title='Amoeba.js'>Amoeba.js</a>
     &raquo;
     <a href='..&#47;..&#47;class_index.html' title='Index'>Index</a>
     &raquo;
@@ -133,6 +133,29 @@
           </td>
         </tr>
       </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>App is the main object. Think of it like a container for your application settings, helpers, and
+routers, as well as a way to automatically initialize and configure Backbone. It&#39;s important not to
+try and <a href='../../classes/Amoeba/App.html#start-class'>Amoeba.App.start</a> the App instance until you&#39;re certain the rest of your code (views, etc) are ]
+already defined, and jQuery is ready.</p><p>See the <a href='../../classes/Amoeba/App.html#constructor-instance'>#constructor</a> documentation for specific options.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Create a new App and initialize it after jQuery loads
+    </h4>
+    <pre><code class='coffee'>class MySite.App extends Amoeba.App
+  initialize: -&gt;
+    @myRouter = new MySite.MyRouter()
+
+jQuery ($) -&gt;
+  MySite.app = MySite.App.start
+    pushState: true
+    viewPath: MySite.Views</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
       <h2>Class Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -156,7 +179,7 @@
     </span>
     <span class='constructor note title'>Constructor</span>
     <span class='desc'>
-      new Amoeba.App(options) where options are: viewPath = The base object under which to find your app&#39;s views templatePath = The base object under which to find your app&#39;s templates hijackRequests (default: true) = Hijack <a> click events to fire associated routes
+      
     </span>
   </li>
   <li>
@@ -230,13 +253,48 @@
     <p class='signature' id='constructor-instance'>
       - (void) <strong>constructor</strong>(options = {})
     </p>
-    <div class='docstring'>
-  <p> new Amoeba.App(options) where options are:
-    viewPath = The base object under which to find your app&#39;s views
-    templatePath = The base object under which to find your app&#39;s templates
-    hijackRequests (default: true) = Hijack <a> click events to fire associated routes</p>
-</div>
-<div class='tags'>
+    <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the app&#39;s settings</span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (option):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>viewPath</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the base object under which your app&#39;s views are contained</span>
+    </li>
+    <li>
+      <span class='name'>templatePath</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the base object under which to find your app&#39;s templates</span>
+    </li>
+    <li>
+      <span class='name'>hijackRequests</span>
+      <span class='type'>
+        (<tt>Boolean</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>Hijack click events on &quot;a&quot; tags to fire associated routes automatically (default true)</span>
+    </li>
+  </ul>
 </div>
   </div>
 </div>
@@ -286,7 +344,7 @@
     </div>
     <div id='footer'>
   Generated on
-  Wed Jan 30 2013 01:50:38 GMT-0800 (PST)
+  Wed Jan 30 2013 02:35:02 GMT-0800 (PST)
   by
   <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
   v1.5.4

@@ -2,7 +2,7 @@
 <html>
   <head>
   <meta charset='UTF-8'>
-  <title>&lt;%= pkg.description %&gt;</title>
+  <title>Amoeba.js Documentation</title>
   <link rel='stylesheet' href='assets/codo.css' type='text/css'>
   <script src='assets/codo.js'></script>
   <script src='assets/search_data.js'></script>
@@ -22,11 +22,11 @@
     <div id='base' data-path=''></div>
 <div id='header'>
   <div id='menu'>
-    <a href='README.rdoc.html' title='Amoeba.js'>Amoeba.js</a>
+    <a href='README.md.html' title='Amoeba.js'>Amoeba.js</a>
     &raquo;
     <a href='class_index.html' title='Index'>Index</a>
     &raquo;
-    <span class='title'>README.rdoc</span>
+    <span class='title'>README.md</span>
     <nav>
       <ul>
         <li class='noframes'>
@@ -126,67 +126,52 @@
         </p>
       </nav>
       <div id='filecontents'>
-        = amoeba-js-rails
+        <h1>amoeba-js-rails</h1><p>Asset Pipeline Integration for Amoeba.js</p><h2>Documentation</h2><p>The documentation is automatically generated from the sourcecode using
+<a href="https://github.com/netzpirat/codo">Codo</a>. Codo uses rdoc/yard or markdown style syntax. The latest
+documentation should always be with the code, in the <code>docs/</code> directory.</p><p>Please try to include documentation for any contributions on your classes and functions like so:</p><pre><code class="lang-coffeescript"># Base class for all animals.
+#
+# @example How to subclass an animal
+#   class Lion extends Animal
+#     move: (direction, speed): -&gt;
+#
+class Example.Animal
 
-Asset Pipeline Integration for Amoeba.js
+  # The Answer to the Ultimate Question of Life, the Universe, and Everything
+  @ANSWER = 42
 
-== Documentation
-
-The documentation is automatically generated from the sourcecode using
-Codo[https://github.com/netzpirat/codo]. Codo uses rdoc/yard or markdown style syntax. The latest
-documentation should always be with the code, in the +docs/+ directory.
-
-Please try to include documentation for any contributions on your classes and functions like so:
-
-  # Base class for all animals.
+  # Construct a new animal.
   #
-  # @example How to subclass an animal
-  #   class Lion extends Animal
-  #     move: (direction, speed): ->
+  # @param [String] name the name of the animal
+  # @param [Date] birthDate when the animal was born
   #
-  class Example.Animal
+  constructor: (@name, @birthDate = new Date()) -&gt;
 
-    # The Answer to the Ultimate Question of Life, the Universe, and Everything
-    @ANSWER = 42
-
-    # Construct a new animal.
-    #
-    # @param [String] name the name of the animal
-    # @param [Date] birthDate when the animal was born
-    #
-    constructor: (@name, @birthDate = new Date()) ->
-
-    # Move the animal.
-    #
-    # @example Move an animal
-    #   new Lion('Simba').move('south', 12)
-    #
-    # @param [Object] options the moving options
-    # @option options [String] direction the moving direction
-    # @option options [Number] speed the speed in mph
-    #
-    move: (options = {}) ->
-
-== Contributing to amoeba-js-rails
-
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.
-* Fork the project.
-* Start a feature/bugfix branch.
-* Commit and push until you are happy with your contribution.
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
-
-== Copyright
-
-Copyright (c) 2013 Amoeba Consulting (http://amoe.ba). See LICENSE.txt for further details.
-
-
+  # Move the animal.
+  #
+  # @example Move an animal
+  #   new Lion(&#39;Simba&#39;).move(&#39;south&#39;, 12)
+  #
+  # @param [Object] options the moving options
+  # @option options [String] direction the moving direction
+  # @option options [Number] speed the speed in mph
+  #
+  move: (options = {}) -&gt;</code></pre>
+<h2>Contributing to amoeba-js-rails</h2>
+<ul>
+<li>Check out the latest master to make sure the feature hasn&#39;t been implemented or the bug hasn&#39;t been fixed yet.</li>
+<li>Check out the issue tracker to make sure someone already hasn&#39;t requested it and/or contributed it.</li>
+<li>Fork the project.</li>
+<li>Start a feature/bugfix branch.</li>
+<li>Commit and push until you are happy with your contribution.</li>
+<li>Make sure to add tests for it. This is important so I don&#39;t break it in a future version unintentionally.</li>
+<li>Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.</li>
+</ul>
+<h2>Copyright</h2><p>Copyright (c) 2013 Amoeba Consulting (<a href="http://amoe.ba">http://amoe.ba</a>). See LICENSE.txt for further details.</p>
       </div>
     </div>
     <div id='footer'>
   Generated on
-  Wed Jan 30 2013 02:31:47 GMT-0800 (PST)
+  Wed Jan 30 2013 02:35:02 GMT-0800 (PST)
   by
   <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
   v1.5.4

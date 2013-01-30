@@ -1,6 +1,24 @@
 #= require_tree ./lib
 #= require ./helpers
 
+###
+App is the main object. Think of it like a container for your application settings, helpers, and
+routers, as well as a way to automatically initialize and configure Backbone. It's important not to
+try and {Amoeba.App.start} the App instance until you're certain the rest of your code (views, etc) are ]
+already defined, and jQuery is ready.
+
+See the {#constructor} documentation for specific options.
+
+@example Create a new App and initialize it after jQuery loads
+  class MySite.App extends Amoeba.App
+    initialize: ->
+      @myRouter = new MySite.MyRouter()
+
+  jQuery ($) ->
+    MySite.app = MySite.App.start
+      pushState: true
+      viewPath: MySite.Views
+###
 class Amoeba.App extends Amoeba.Module
   @include Backbone.Events
 
@@ -8,10 +26,11 @@ class Amoeba.App extends Amoeba.Module
     linkSelector: 'a'
 
   ###
-    new Amoeba.App(options) where options are:
-      viewPath = The base object under which to find your app's views
-      templatePath = The base object under which to find your app's templates
-      hijackRequests (default: true) = Hijack <a> click events to fire associated routes
+  @param [Object] options the app's settings
+  @option options [Object] viewPath the base object under which your app's views are contained
+  @option options [Object] templatePath the base object under which to find your app's templates
+  @option options [Boolean] hijackRequests Hijack click events on "a" tags to fire associated routes
+    automatically (default true)
   ###
   constructor: (options = {}) ->
     @helpers = new Amoeba.Helpers()

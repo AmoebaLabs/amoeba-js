@@ -32,9 +32,9 @@ module.exports = function(grunt) {
       dist: {
         target: 'src',
         options: {
-          name: '<%= pkg.name %>',
-          title: '<%= pkg.description %>',
-          readme: 'README.rdoc',
+          name: 'Amoeba.js',
+          title: 'Amoeba.js Documentation',
+          readme: 'README.md',
           analytics: 'false',
           'output-dir': 'docs'
         }
