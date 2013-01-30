@@ -12,6 +12,7 @@
   },
   "author": "Amoeba Consulting <sayhi@amoe.ba> (http://amoe.ba)",
   "license": "MIT",
+  "homepage": "http://github.com/AmoebaConsulting/amoeba-js",
   "dependencies": {
     "underscore": "1.4.3",
     "backbone": "0.9.10"
@@ -22,7 +23,7 @@
     "grunt-growl": "0.1.3",
     "grunt-barkeep": "0.3.10",
     "grunt-contrib-copy": "0.3.2",
-    "coffeedoc": "0.2.7",
+    "codo": "1.5.4",
     "snockets": "1.3.8",
     "mocha": "1.8.1",
     "mocha-phantomjs": "latest",

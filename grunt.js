@@ -3,11 +3,9 @@ module.exports = function(grunt) {
     pkg: '<json:package.json>',
     meta: {
       buildDirectory: '.',
-      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+      banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;' +
+        ' Licensed <%= pkg.license %>\n' + ' * <%= pkg.homepage %> */'
     },
     snockets: {
       core: {
@@ -30,13 +28,15 @@ module.exports = function(grunt) {
         }
       }
     },
-    coffeedoc: {
+    codo: {
       dist: {
         target: 'src',
         options: {
-          output: 'docs',
-          parser: 'commonjs',
-          renderer: 'html'
+          name: '<%= pkg.name %>',
+          title: '<%= pkg.description %>',
+          readme: 'README.rdoc',
+          analytics: 'false',
+          'output-dir': 'docs'
         }
       }
     },
@@ -83,9 +83,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-barkeep');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerMultiTask('coffeedoc', 'Generate source documents from CoffeeScript files.', function(){
+  grunt.registerMultiTask('codo', 'Generate source documents from CoffeeScript files.', function(){
     var target  = this.data.target,
-        binary  = this.data.binary || 'node_modules/coffeedoc/bin/coffeedoc',
+        binary  = this.data.binary || 'node_modules/codo/bin/codo',
         options = this.data.options || {},
         args    = [binary],
         done    = this.async();
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
 
     grunt.verbose.write('Writing documentation from target '+target+'...');
 
-    var cd = grunt.util.spawn({
+    grunt.util.spawn({
       cmd: 'coffee',
       args: args
     }, function(err, result, code) {
@@ -127,5 +127,5 @@ module.exports = function(grunt) {
     mocha.stderr.pipe(process.stderr);
   });
 
-  grunt.registerTask('default', 'snockets growl:snockets coffee growl:coffee coffeedoc mocha min copy');
+  grunt.registerTask('default', 'snockets growl:snockets coffee growl:coffee codo mocha min copy');
 };
