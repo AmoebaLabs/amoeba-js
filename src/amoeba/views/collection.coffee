@@ -14,7 +14,7 @@ class Amoeba.View.Collection extends Amoeba.View
     return if @rendered
 
     @extractSubViews()
-    @$el.html(@renderSubViews())
+    @$el.html(@renderSubViews()) if @subviews.length
     @rendered = true
     @trigger('render')
     @

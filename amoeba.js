@@ -293,7 +293,9 @@
         return;
       }
       this.extractSubViews();
-      this.$el.html(this.renderSubViews());
+      if (this.subviews.length) {
+        this.$el.html(this.renderSubViews());
+      }
       this.rendered = true;
       this.trigger('render');
       return this;
@@ -385,7 +387,7 @@
       if (!this.rendered || this.loading) {
         return true;
       }
-      if (this.scrolledToBottom() && this.collection.hasMorePages()) {
+      if (this.needsToLoad() && this.collection.hasMorePages()) {
         this.loading = true;
         return this.collection.fetchNextPage({
           success: this.onLoad,
@@ -394,7 +396,7 @@
       }
     };
 
-    ScrollableCollection.prototype.scrolledToBottom = function() {
+    ScrollableCollection.prototype.needsToLoad = function() {
       var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
       winHeight = $(window).height();
       scrollTop = $(window).scrollTop();

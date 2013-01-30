@@ -11,11 +11,11 @@ class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
   onScroll: =>
     return true if not @rendered or @loading
 
-    if @scrolledToBottom() and @collection.hasMorePages()
+    if @needsToLoad() and @collection.hasMorePages()
       @loading = true
       @collection.fetchNextPage success: @onLoad, error: @onLoad
 
-  scrolledToBottom: ->
+  needsToLoad: ->
     winHeight = $(window).height()
     scrollTop = $(window).scrollTop()
     winBottom = winHeight + scrollTop
