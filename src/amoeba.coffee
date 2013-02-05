@@ -1,5 +1,6 @@
 #= require_tree ./lib
 #= require ./namespace
+#= require amoeba/log
 #= require amoeba/sync
 #= require amoeba/helpers
 #= require amoeba/model

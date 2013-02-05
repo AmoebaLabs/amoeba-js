@@ -7,6 +7,16 @@
 }).call(this);
 
 (function() {
+
+  Amoeba.log = function(ln) {
+    if (Amoeba.debug) {
+      return console.log(ln);
+    }
+  };
+
+}).call(this);
+
+(function() {
   var methodMap, originalSync;
 
   methodMap = {
@@ -546,7 +556,7 @@ See the {#constructor} documentation for specific options.
       if (options.templatePath) {
         this.templatePath = options.templatePath;
       }
-      this.hijackRequests = options.hijackRequests === false ? false : true;
+      this.hijackRequests = this.truthynessOf(options.hijackRequests);
       if (this.hijackRequests) {
         this.bindRequestListner();
       }
@@ -564,16 +574,65 @@ See the {#constructor} documentation for specific options.
       return Amoeba.app;
     };
 
+    /*
+      This method is intensionally left empty for the user of the library to subclass and implemenet.
+    */
+
+
     App.prototype.initialize = function() {};
 
-    App.prototype.requestHandler = function(e) {};
+    /*
+      Determine if a given `bool` var is true, or false/undefined. Returns a bool.
+      @param [bool] the boolean or an object to evaluate (could be nil)
+    */
 
-    App.prototype.bindRequestListner = function() {
-      return $(document).on(this.constructor.settings.linkSelector, 'click', this.requestHandler);
+
+    App.prototype.truthynessOf = function(bool) {
+      if (bool === false) {
+        return false;
+      } else {
+        return true;
+      }
     };
 
+    /*
+      Fired whenever a click event is generated. This will search the DOM for the nearest `<a>` tag to
+        the event target, and check its href against known routes. If such a route exists, it will
+        navigate to that page. Otherwise, it will reach out to the server.
+      @param [Object] e the jQuery event fired from a click event
+    */
+
+
+    App.prototype.requestHandler = function(e) {
+      var requestedPath;
+      requestedPath = $(e.target).closest('a').attr('href').replace(/^\//, '');
+      Amoeba.log("Initiating route to '" + requestedPath + "'");
+      if (Backbone.history.hasUrl(requestedPath)) {
+        Backbone.history.navigate(requestedPath, {
+          trigger: true
+        });
+        return false;
+      }
+      return true;
+    };
+
+    /*
+      This method will bind to all click events and listen for click events and fire the
+        {#requestHandler} function. It is called during the constructor if `hijackRequests = true`.
+    */
+
+
+    App.prototype.bindRequestListner = function() {
+      return $(document).on('click', this.constructor.settings.linkSelector, this.requestHandler);
+    };
+
+    /*
+      This method will unbind the click event hijacker setup by {#bindRequestListner}.
+    */
+
+
     App.prototype.unbindRequestListener = function() {
-      return $(document).off(this.constructor.settings.linkSelector, 'click', this.requestHandler);
+      return $(document).off('click', this.constructor.settings.linkSelector, this.requestHandler);
     };
 
     return App;

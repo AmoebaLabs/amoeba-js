@@ -189,7 +189,17 @@ jQuery ($) -&gt;
       </a>
     </span>
     <span class='desc'>
-      
+      This method is intensionally left empty for the user of the library to subclass and implemenet.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#truthynessOf-instance'>
+        - (void) <strong>truthynessOf</strong>(bool)
+      </a>
+    </span>
+    <span class='desc'>
+      Determine if a given <code>bool</code> var is true, or false/undefined.
     </span>
   </li>
   <li>
@@ -200,7 +210,7 @@ jQuery ($) -&gt;
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      This method handles click events
+      Fired whenever a click event is generated.
     </span>
   </li>
   <li>
@@ -211,7 +221,7 @@ jQuery ($) -&gt;
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      This method will listen for click events and fire routes if they exist
+      This method will bind to all click events and listen for click events and fire the <a href='../../classes/Amoeba/App.html#requestHandler-instance'>#requestHandler</a> function.
     </span>
   </li>
   <li>
@@ -222,7 +232,7 @@ jQuery ($) -&gt;
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      This method will unbind the click event hijacker
+      This method will unbind the click event hijacker setup by <a href='../../classes/Amoeba/App.html#bindRequestListner-instance'>#bindRequestListner</a>.
     </span>
   </li>
 </ul>
@@ -304,7 +314,31 @@ jQuery ($) -&gt;
     <p class='signature' id='initialize-instance'>
       - (void) <strong>initialize</strong>()
     </p>
-    <div class='tags'>
+    <div class='docstring'>
+  <p>This method is intensionally left empty for the user of the library to subclass and implemenet.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='truthynessOf-instance'>
+      - (void) <strong>truthynessOf</strong>(bool)
+    </p>
+    <div class='docstring'>
+  <p>Determine if a given <code>bool</code> var is true, or false/undefined. Returns a bool.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>the</span>
+      <span class='type'>
+        (<tt>bool</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>boolean or an object to evaluate (could be nil)</span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -313,9 +347,20 @@ jQuery ($) -&gt;
       (bound)
     </p>
     <div class='docstring'>
-  <p>This method handles click events</p>
+  <p>Fired whenever a click event is generated. This will search the DOM for the nearest <code>&lt;a&gt;</code> tag to the event target, and check its href against known routes. If such a route exists, it will navigate to that page. Otherwise, it will reach out to the server.</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>e</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the jQuery event fired from a click event</span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -324,7 +369,7 @@ jQuery ($) -&gt;
       (bound)
     </p>
     <div class='docstring'>
-  <p>This method will listen for click events and fire routes if they exist</p>
+  <p>This method will bind to all click events and listen for click events and fire the <a href='../../classes/Amoeba/App.html#requestHandler-instance'>#requestHandler</a> function. It is called during the constructor if <code>hijackRequests = true</code>.</p>
 </div>
 <div class='tags'>
 </div>
@@ -335,7 +380,7 @@ jQuery ($) -&gt;
       (bound)
     </p>
     <div class='docstring'>
-  <p>This method will unbind the click event hijacker</p>
+  <p>This method will unbind the click event hijacker setup by <a href='../../classes/Amoeba/App.html#bindRequestListner-instance'>#bindRequestListner</a>.</p>
 </div>
 <div class='tags'>
 </div>
@@ -344,7 +389,7 @@ jQuery ($) -&gt;
     </div>
     <div id='footer'>
   Generated on
-  Wed Jan 30 2013 02:35:02 GMT-0800 (PST)
+  Tue Feb 05 2013 02:25:22 GMT-0800 (PST)
   by
   <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
   v1.5.4

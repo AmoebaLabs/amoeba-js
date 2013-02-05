@@ -21,7 +21,6 @@ See the {#constructor} documentation for specific options.
 ###
 class Amoeba.App extends Amoeba.Module
   @include Backbone.Events
-
   @settings:
     linkSelector: 'a'
 
@@ -37,7 +36,7 @@ class Amoeba.App extends Amoeba.Module
     @lookupContext = new Amoeba.LookupContext(options.viewPath) if options.viewPath
     @templatePath = options.templatePath if options.templatePath
 
-    @hijackRequests = if options.hijackRequests is false then false else true
+    @hijackRequests = @truthynessOf(options.hijackRequests)
     @bindRequestListner() if @hijackRequests
 
     @
@@ -48,19 +47,45 @@ class Amoeba.App extends Amoeba.Module
     Backbone.history.start(_.pick(options, 'pushState', 'hashChange', 'silent', 'root'))
     Amoeba.app
 
+  ###
+  This method is intensionally left empty for the user of the library to subclass and implemenet.
+  ###
   initialize: ->
 
-  # This method handles click events
-  requestHandler: (e) =>
-    #TODO: Finish
+  ###
+  Determine if a given `bool` var is true, or false/undefined. Returns a bool.
+  @param [bool] the boolean or an object to evaluate (could be nil)
+  ###
+  truthynessOf: (bool) ->
+    return if bool is false then false else true
 
-  # This method will listen for click events and fire routes if they exist
+  ###
+  Fired whenever a click event is generated. This will search the DOM for the nearest `<a>` tag to
+    the event target, and check its href against known routes. If such a route exists, it will
+    navigate to that page. Otherwise, it will reach out to the server.
+  @param [Object] e the jQuery event fired from a click event
+  ###
+  requestHandler: (e) => #TODO: Finish
+    requestedPath = $(e.target).closest('a').attr('href').replace /^\//, '' # Remove any starting slashes
+    Amoeba.log "Initiating route to '#{requestedPath}'"
+    if Backbone.history.hasUrl(requestedPath)
+      Backbone.history.navigate(requestedPath, trigger: true)
+      return false;
+
+    return true; # If we didn't find a router for this path, bubble up to the browser.
+
+  ###
+  This method will bind to all click events and listen for click events and fire the
+    {#requestHandler} function. It is called during the constructor if `hijackRequests = true`.
+  ###
   bindRequestListner: =>
-    $(document).on(@constructor.settings.linkSelector, 'click', @requestHandler)
+    $(document).on('click', @constructor.settings.linkSelector, @requestHandler)
 
-  # This method will unbind the click event hijacker
+  ###
+  This method will unbind the click event hijacker setup by {#bindRequestListner}.
+  ###
   unbindRequestListener: =>
-    $(document).off(@constructor.settings.linkSelector, 'click', @requestHandler)
+    $(document).off('click', @constructor.settings.linkSelector, @requestHandler)
 
 
 
