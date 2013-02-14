@@ -1,10 +1,13 @@
-describe 'Amoeba.PaginatedCollection', ->
+describe 'Amoeba.Collection.Growable', ->
   collection = fetchStub = undefined
 
   beforeEach ->
-    collection = new Amoeba.PaginatedCollection()
+    collection = new Amoeba.Collection.Growable()
     collection.url = '/test'
-    fetchStub = sinon.stub(collection, 'fetch')
+    fetchStub = sinon.stub(Amoeba.Collection.Growable.__super__, 'fetch')
+
+  afterEach ->
+    Amoeba.Collection.Growable.__super__.fetch.restore()
 
   describe '#reset', ->
     it 'should clear the next page', ->
@@ -12,7 +15,7 @@ describe 'Amoeba.PaginatedCollection', ->
       collection.reset()
       expect(collection.nextPage).to.be.undefined
 
-  describe '#fetchNextPage', ->
+  describe '#fetch', ->
     nextPage = undefined
 
     beforeEach ->
@@ -20,20 +23,14 @@ describe 'Amoeba.PaginatedCollection', ->
       collection.nextPage = nextPage
 
     it 'should not remove the models', ->
-      collection.fetchNextPage()
+      collection.fetch()
 
       fetchStub.should.have.been.calledWithMatch remove: false
 
-    it 'should append the page parameter to a new query string', ->
-      collection.fetchNextPage()
+    it 'should call with the correct url', ->
+      collection.fetch()
 
       fetchStub.should.have.been.calledWithMatch url: "/test?page=#{nextPage}"
-
-    it 'should append the page parameter to an existing query string', ->
-      collection.url = '/test?test=true'
-      collection.fetchNextPage()
-
-      fetchStub.should.have.been.calledWithMatch url: "/test?test=true&page=#{nextPage}"
 
   describe '#hasMorePages', ->
     it 'should if there is a next page', ->

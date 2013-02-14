@@ -134,14 +134,14 @@ describe('Amoeba.View.Collection', function() {
       return document.createDocumentFragment.restore();
     });
   });
-  describe('#add', function() {
+  describe('#addModel', function() {
     it('should add the subview', function() {
-      view.add(model);
+      view.addModel(model);
       return view.subviews.length.should.equal(1);
     });
     it('should add to the el if rendered', function() {
       view.render();
-      view.add(model);
+      view.addModel(model);
       return view.el.textContent.should.equal('Beam me upBeam me up');
     });
     it('should not add to the el if rendered', function() {
@@ -150,7 +150,7 @@ describe('Amoeba.View.Collection', function() {
       view.on('render', function() {
         return everything = true;
       });
-      view.add(model);
+      view.addModel(model);
       return everything.should.be.not.ok;
     });
     return it('should trigger a render event', function() {
@@ -160,19 +160,19 @@ describe('Amoeba.View.Collection', function() {
       view.on('render', function() {
         return everything = true;
       });
-      view.add(model);
+      view.addModel(model);
       return everything.should.be.ok;
     });
   });
-  return describe('#remove', function() {
+  return describe('#removeModel', function() {
     it('should remove the subview from the page if rendered', function() {
       view.render();
-      view.remove(model);
+      view.removeModel(model);
       return view.el.innerText.should.equal('');
     });
     return it('should resize the subviews', function() {
       view.render();
-      view.remove(model);
+      view.removeModel(model);
       return view.subviews.length.should.equal(0);
     });
   });

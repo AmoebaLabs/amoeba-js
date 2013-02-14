@@ -1,7 +1,20 @@
 (function() {
 
   window.Amoeba = {
-    version: '0.2.0'
+    version: '0.2.0',
+    Collection: {}
+  };
+
+}).call(this);
+
+(function() {
+
+  Amoeba.Util = {
+    appendQueryParam: function(url, param) {
+      var appendChar;
+      appendChar = !~url.indexOf('?') ? '?' : '&';
+      return "" + url + appendChar + param;
+    }
   };
 
 }).call(this);
@@ -74,54 +87,6 @@
     return Helpers;
 
   })();
-
-}).call(this);
-
-(function() {
-  var __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  Amoeba.PaginatedCollection = (function(_super) {
-
-    __extends(PaginatedCollection, _super);
-
-    function PaginatedCollection() {
-      return PaginatedCollection.__super__.constructor.apply(this, arguments);
-    }
-
-    PaginatedCollection.prototype.urlPageQuery = 'page';
-
-    PaginatedCollection.prototype.reset = function() {
-      this.nextPage = void 0;
-      return PaginatedCollection.__super__.reset.apply(this, arguments);
-    };
-
-    PaginatedCollection.prototype.hasMorePages = function() {
-      return _.result(this, 'nextPage') != null;
-    };
-
-    PaginatedCollection.prototype.fetchNextPage = function(options) {
-      var appendChar, query, url;
-      if (options == null) {
-        options = {};
-      }
-      url = _.result(this, 'url');
-      if (!url) {
-        throw 'No url specified';
-      }
-      query = "" + this.urlPageQuery + "=" + (_.result(this, 'nextPage'));
-      appendChar = !~url.indexOf('?') ? '?' : '&';
-      _.extend(options, {
-        url: "" + url + appendChar + query,
-        update: true,
-        remove: false
-      });
-      return this.fetch(options);
-    };
-
-    return PaginatedCollection;
-
-  })(Backbone.Collection);
 
 }).call(this);
 
@@ -267,11 +232,17 @@
 
     __extends(Collection, _super);
 
+    Collection.prototype.subView = Amoeba.View;
+
     function Collection(options) {
-      var _ref, _ref1;
+      var _ref;
       if (options == null) {
         options = {};
       }
+      this.removeModel = __bind(this.removeModel, this);
+
+      this.addModel = __bind(this.addModel, this);
+
       this.extractSubView = __bind(this.extractSubView, this);
 
       this.render = __bind(this.render, this);
@@ -280,12 +251,10 @@
       if ((_ref = options.subView) == null) {
         options.subView = {};
       }
-      if ((_ref1 = this.subView) == null) {
-        this.subView = options.subView.partial;
-      }
+      this.subView = options.subView.partial || this.subview;
       Collection.__super__.constructor.call(this, options);
-      this.collection.on('add', this.add.bind(this));
-      this.collection.on('remove', this.remove.bind(this));
+      this.listenTo(this.collection, 'add', this.addModel);
+      this.listenTo(this.collection, 'remove', this.removeModel);
     }
 
     Collection.prototype.render = function() {
@@ -334,7 +303,7 @@
       return fragment;
     };
 
-    Collection.prototype.add = function(model) {
+    Collection.prototype.addModel = function(model) {
       var subview;
       subview = this.extractSubView(model);
       if (this.rendered) {
@@ -343,7 +312,7 @@
       }
     };
 
-    Collection.prototype.remove = function(model) {
+    Collection.prototype.removeModel = function(model) {
       var subviewToRemove;
       subviewToRemove = _.select(this.subviews, function(subview) {
         return subview.model.id === model.id;
@@ -351,7 +320,7 @@
       if (subviewToRemove) {
         this.subviews = _.without(this.subviews, subviewToRemove);
         if (this.rendered) {
-          return subviewToRemove.$el.remove();
+          return subviewToRemove.remove();
         }
       }
     };
@@ -389,7 +358,7 @@
       }
       if (this.needsToLoad() && this.collection.hasMorePages()) {
         this.loading = true;
-        return this.collection.fetchNextPage({
+        return this.collection.fetch({
           success: this.onLoad,
           error: this.onLoad
         });
@@ -414,6 +383,114 @@
     return ScrollableCollection;
 
   })(Amoeba.View.Collection);
+
+}).call(this);
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Amoeba.View.PaginatedCollection = (function(_super) {
+
+    __extends(PaginatedCollection, _super);
+
+    PaginatedCollection.prototype.subView = Amoeba.View.Collection;
+
+    function PaginatedCollection(options) {
+      if (options == null) {
+        options = {};
+      }
+      this.removePage = __bind(this.removePage, this);
+
+      this.remove = __bind(this.remove, this);
+
+      this.add = __bind(this.add, this);
+
+      this.render = __bind(this.render, this);
+
+      this.pages = {};
+      this.currentPage = options.page || 1;
+      PaginatedCollection.__super__.constructor.call(this, options);
+      this.listenTo(this.collection, 'add', this.add);
+      this.listenTo(this.collection, 'remove', this.remove);
+      this.listenTo(this.collection, 'removePage', this.removePage);
+    }
+
+    PaginatedCollection.prototype.render = function(page, collection) {
+      var $pageEl;
+      if (!this.pages[page]) {
+        this.createPage(page, collection);
+      }
+      if (this.pages[page].rendered) {
+        return;
+      }
+      $pageEl = this.getPageEl(page);
+      if ($pageEl) {
+        $pageEl.show();
+      } else {
+        $pageEl = this.pages[page].render().$el.addClass("page-" + page);
+        this.$el.append($pageEl);
+      }
+      if (this.pages[this.currentPage]) {
+        this.getPageEl(this.currentPage).hide();
+        this.pages[this.currentPage].rendered = false;
+      }
+      if (page !== this.currentPage) {
+        this.currentPage = page;
+      }
+      this.pages[page].rendered = true;
+      this.trigger('render', page);
+      return this;
+    };
+
+    PaginatedCollection.prototype.refresh = function(page) {
+      var _this = this;
+      if (page == null) {
+        page = this.currentPage;
+      }
+      if (this.pages[page]) {
+        this.pages[page].rendered = false;
+        if (this.pages[page].dirty) {
+          this.removePage(page);
+        }
+      }
+      this.collection.fetch(page, {
+        silent: true,
+        success: function(collection) {
+          return _this.render(page, collection);
+        }
+      });
+      return this;
+    };
+
+    PaginatedCollection.prototype.add = function(page, model) {};
+
+    PaginatedCollection.prototype.remove = function(page, model) {};
+
+    PaginatedCollection.prototype.removePage = function(page) {
+      this.pages[page].view.remove();
+      delete this.pages[page];
+      return this;
+    };
+
+    PaginatedCollection.prototype.createPage = function(page, collection) {
+      return this.pages[page] = {
+        collection: collection,
+        view: this._render(this.subView, _.extend(this.options, {
+          collection: collection
+        })),
+        rendered: false
+      };
+    };
+
+    PaginatedCollection.prototype.getPageEl = function(page) {
+      return this.$(".page-" + page);
+    };
+
+    return PaginatedCollection;
+
+  })(Amoeba.View);
 
 }).call(this);
 
@@ -590,6 +667,210 @@
     };
   });
 })();
+
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Amoeba.Collection.Container = (function(_super) {
+
+    __extends(Container, _super);
+
+    Container.include(Backbone.Events);
+
+    Container.prototype.urlPageQuery = 'page';
+
+    Container.prototype.collection = Backbone.Collection;
+
+    function Container() {
+      this.pages = {};
+      this.initialize.apply(this, arguments);
+    }
+
+    Container.prototype.initialize = function() {};
+
+    Container.prototype.sync = function() {
+      return Backbone.sync.apply(this, arguments);
+    };
+
+    Container.prototype.parse = function(resp) {
+      return resp;
+    };
+
+    Container.prototype.resetPage = function(page, resp, options) {
+      if (options == null) {
+        options = {};
+      }
+      if (this.pages[page]) {
+        this.pages[page].reset(this.parse(resp), options);
+      } else {
+        this.pages[page] = new this.collection(this.parse(resp));
+        this.pages[page].page = page;
+        this.pages[page].on('all', this._onCollectionEvent, this);
+      }
+      this.pages[page].dirty = false;
+      return this.pages[page];
+    };
+
+    Container.prototype._onCollectionEvent = function(event, model, collection) {
+      if (event === 'add') {
+        return this.trigger('add', collection.page, model, this);
+      } else if (event === 'remove') {
+        this.shift(collection.page);
+        return this.trigger('remove', collection.page, model, this);
+      }
+    };
+
+    Container.prototype.reset = function() {
+      var collection, page, _ref;
+      _ref = this.pages;
+      for (page in _ref) {
+        collection = _ref[page];
+        this.remove(page);
+      }
+      this.pages = {};
+      return this;
+    };
+
+    Container.prototype.shift = function(page) {
+      var collection, nextPage, _ref,
+        _this = this;
+      if (this.perPage && this.pages[page].length >= this.perPage) {
+        return this;
+      }
+      nextPage = page + 1;
+      if (this.pages[nextPage]) {
+        this._shift(page, nextPage);
+      } else {
+        this.fetch(nextPage, {
+          success: function() {
+            if (_this.pages[nextPage]) {
+              return _this._shift(page, nextPage);
+            }
+          }
+        });
+      }
+      _ref = this.pages;
+      for (page in _ref) {
+        collection = _ref[page];
+        if (page > nextPage) {
+          this.remove(page);
+        }
+      }
+      return this;
+    };
+
+    Container.prototype._shift = function(page, nextPage) {
+      var collectionToShift, shifted;
+      collectionToShift = this.pages[nextPage];
+      shifted = collectionToShift.first();
+      this.pages[page].add(shifted);
+      collectionToShift.remove(shifted, {
+        silent: true
+      });
+      if (collectionToShift.length === 0) {
+        return this.remove(nextPage);
+      } else {
+        return collectionToShift.dirty = true;
+      }
+    };
+
+    Container.prototype.remove = function(page) {
+      if (!this.pages[page]) {
+        return this;
+      }
+      this.pages[page].reset();
+      this.pages[page].off('all', this._onCollectionEvent, this);
+      delete this.pages[page];
+      this.trigger('removePage', page, this);
+      return this;
+    };
+
+    Container.prototype.fetch = function(page, options) {
+      var success, url,
+        _this = this;
+      if (options == null) {
+        options = {};
+      }
+      page = parseInt(page);
+      if (this.pages[page] && !this.pages[page].dirty && !options.force) {
+        return typeof success === "function" ? success(this.pages[page], this, this.pages[page].toJSON(), options) : void 0;
+      }
+      success = options.success;
+      options.success = function(resp) {
+        var collection;
+        collection = _this.resetPage(page, resp, options);
+        return typeof success === "function" ? success(collection, _this, resp, options) : void 0;
+      };
+      url = _.result(this, 'url');
+      if (!url) {
+        throw 'No url specified';
+      }
+      options.url = Amoeba.Util.appendQueryParam(url, "" + this.urlPageQuery + "=" + page);
+      return this.sync('read', this, options);
+    };
+
+    Container.prototype.toJSON = function(options) {
+      return _.map(this.pages, function(collection, page) {
+        var obj;
+        obj = {};
+        obj[page] = collection.toJSON(options);
+        return obj;
+      });
+    };
+
+    return Container;
+
+  })(Amoeba.Module);
+
+}).call(this);
+
+(function() {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Amoeba.Collection.Growable = (function(_super) {
+
+    __extends(Growable, _super);
+
+    function Growable() {
+      return Growable.__super__.constructor.apply(this, arguments);
+    }
+
+    Growable.prototype.urlPageQuery = 'page';
+
+    Growable.prototype.reset = function() {
+      this.nextPage = void 0;
+      return Growable.__super__.reset.apply(this, arguments);
+    };
+
+    Growable.prototype.hasMorePages = function() {
+      return _.result(this, 'nextPage') != null;
+    };
+
+    Growable.prototype.fetch = function(options) {
+      var query, url;
+      if (options == null) {
+        options = {};
+      }
+      url = _.result(this, 'url');
+      if (!url) {
+        throw 'No url specified';
+      }
+      query = "" + this.urlPageQuery + "=" + (_.result(this, 'nextPage'));
+      _.extend(options, {
+        url: Amoeba.Util.appendQueryParam(url, query),
+        update: true,
+        remove: false
+      });
+      return Growable.__super__.fetch.call(this, options);
+    };
+
+    return Growable;
+
+  })(Backbone.Collection);
+
+}).call(this);
 
 (function() {
 

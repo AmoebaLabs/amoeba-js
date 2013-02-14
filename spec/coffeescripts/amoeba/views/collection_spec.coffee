@@ -91,15 +91,15 @@ describe 'Amoeba.View.Collection', ->
 
       document.createDocumentFragment.restore()
 
-  describe '#add', ->
+  describe '#addModel', ->
     it 'should add the subview', ->
-      view.add(model)
+      view.addModel(model)
 
       view.subviews.length.should.equal 1
 
     it 'should add to the el if rendered', ->
       view.render()
-      view.add(model)
+      view.addModel(model)
       view.el.textContent.should.equal 'Beam me upBeam me up'
 
     it 'should not add to the el if rendered', ->
@@ -107,7 +107,7 @@ describe 'Amoeba.View.Collection', ->
       view.on 'render', ->
         everything = true
 
-      view.add(model)
+      view.addModel(model)
       everything.should.be.not.ok
 
     it 'should trigger a render event', ->
@@ -117,16 +117,16 @@ describe 'Amoeba.View.Collection', ->
       view.on 'render', ->
         everything = true
 
-      view.add(model)
+      view.addModel(model)
       everything.should.be.ok
 
-  describe '#remove', ->
+  describe '#removeModel', ->
     it 'should remove the subview from the page if rendered', ->
       view.render()
-      view.remove(model)
+      view.removeModel(model)
       view.el.innerText.should.equal ''
 
     it 'should resize the subviews', ->
       view.render()
-      view.remove(model)
+      view.removeModel(model)
       view.subviews.length.should.equal 0

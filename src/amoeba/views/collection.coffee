@@ -1,14 +1,15 @@
 #= require ../view
 
 class Amoeba.View.Collection extends Amoeba.View
+  subView: Amoeba.View
   constructor: (options = {}) ->
     @subviews = []
     options.subView ?= {}
-    @subView ?= options.subView.partial
+    @subView = options.subView.partial or @subview
     super(options)
 
-    @collection.on('add', @add.bind(@))
-    @collection.on('remove', @remove.bind(@))
+    @listenTo(@collection, 'add', @addModel)
+    @listenTo(@collection, 'remove', @removeModel)
 
   render: =>
     return if @rendered
@@ -39,18 +40,18 @@ class Amoeba.View.Collection extends Amoeba.View
       fragment.appendChild(subview.render().el)
     fragment
 
-  add: (model) ->
+  addModel: (model) =>
     subview = @extractSubView(model)
 
     if @rendered
       @$el.append(subview.render().el)
       @trigger('render')
 
-  remove: (model) ->
+  removeModel: (model) =>
     subviewToRemove = _.select(@subviews, (subview) ->
       subview.model.id is model.id
     )[0]
 
     if subviewToRemove
       @subviews = _.without @subviews, subviewToRemove
-      subviewToRemove.$el.remove() if @rendered
+      subviewToRemove.remove() if @rendered

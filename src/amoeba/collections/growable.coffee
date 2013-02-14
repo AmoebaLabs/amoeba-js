@@ -1,21 +1,20 @@
-class Amoeba.PaginatedCollection extends Backbone.Collection
+class Amoeba.Collection.Growable extends Backbone.Collection
   urlPageQuery: 'page'
   reset: ->
     @nextPage = undefined
     super
   hasMorePages: ->
     _.result(@, 'nextPage')?
-  fetchNextPage: (options = {}) ->
+  fetch: (options = {}) ->
     url = _.result(@, 'url')
 
     throw 'No url specified' unless url
 
     query = "#{@urlPageQuery}=#{_.result(@, 'nextPage')}"
-    appendChar = if !~url.indexOf('?') then '?' else '&'
     _.extend(options,
-      url: "#{url}#{appendChar}#{query}"
+      url: Amoeba.Util.appendQueryParam(url, query)
       update: true
       remove: false
     )
 
-    @fetch(options)
+    super(options)
