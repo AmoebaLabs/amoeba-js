@@ -32,11 +32,12 @@ class Amoeba.App extends Amoeba.Module
     automatically (default true)
   ###
   constructor: (options = {}) ->
+    _.defaults(options, hijackRequests: true)
+
     @helpers = new Amoeba.Helpers()
     @lookupContext = new Amoeba.LookupContext(options.viewPath) if options.viewPath
     @templatePath = options.templatePath if options.templatePath
-
-    @hijackRequests = @truthynessOf(options.hijackRequests)
+    @hijackRequests = options.hijackRequests
     @bindRequestListner() if @hijackRequests
 
     @
@@ -53,19 +54,12 @@ class Amoeba.App extends Amoeba.Module
   initialize: ->
 
   ###
-  Determine if a given `bool` var is true, or false/undefined. Returns a bool.
-  @param [bool] the boolean or an object to evaluate (could be nil)
-  ###
-  truthynessOf: (bool) ->
-    return if bool is false then false else true
-
-  ###
   Fired whenever a click event is generated. This will search the DOM for the nearest `<a>` tag to
     the event target, and check its href against known routes. If such a route exists, it will
     navigate to that page. Otherwise, it will reach out to the server.
   @param [Object] e the jQuery event fired from a click event
   ###
-  requestHandler: (e) => #TODO: Finish
+  requestHandler: (e) =>
     requestedPath = $(e.target).closest('a').attr('href').replace /^\//, '' # Remove any starting slashes
     Amoeba.log "Initiating route to '#{requestedPath}'"
     if Backbone.history.hasUrl(requestedPath)
