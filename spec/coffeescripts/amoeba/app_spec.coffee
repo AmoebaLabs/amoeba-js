@@ -1,4 +1,12 @@
 describe 'Amoeba.App', ->
+  startStub = undefined
+
+  beforeEach ->
+    startStub = sinon.stub(Backbone.history, 'start')
+
+  afterEach ->
+    Backbone.history.start.restore()
+
   describe '.start', ->
     it 'should set the global app as a new App', ->
       spy = sinon.spy(Amoeba, 'App')
@@ -8,7 +16,6 @@ describe 'Amoeba.App', ->
       spy.should.have.been.calledWith({})
 
     it 'should start the Backbone history with the supported options', ->
-      spy = sinon.stub(Backbone.history, 'start')
       options =
         pushState: true
         hashChange: false
@@ -17,7 +24,7 @@ describe 'Amoeba.App', ->
 
       Amoeba.App.start(options)
 
-      spy.should.have.been.calledWith(options)
+      startStub.should.have.been.calledWith(options)
 
   describe '#new', ->
     it 'should create the helpers', ->

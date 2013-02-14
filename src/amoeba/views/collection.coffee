@@ -5,7 +5,7 @@ class Amoeba.View.Collection extends Amoeba.View
   constructor: (options = {}) ->
     @subviews = []
     options.subView ?= {}
-    @subView = options.subView.partial or @subview
+    @subView = options.subView.partial or @subView
     super(options)
 
     @listenTo(@collection, 'add', @addModel)

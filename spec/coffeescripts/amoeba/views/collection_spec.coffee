@@ -13,6 +13,7 @@ describe 'Amoeba.View.Collection', ->
   class ParentView extends Amoeba.View.Collection
 
   beforeEach ->
+    sinon.stub(Backbone.history, 'start')
     Amoeba.App.start()
     model = new Backbone.Model(id: 1)
     collection = new TestCollection([model])
@@ -20,6 +21,9 @@ describe 'Amoeba.View.Collection', ->
       collection: collection
       subView:
         partial: SubView
+
+  afterEach ->
+    Backbone.history.start.restore()
 
   describe '#render', ->
     it 'should load up the subviews', ->

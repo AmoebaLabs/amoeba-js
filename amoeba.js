@@ -251,7 +251,7 @@
       if ((_ref = options.subView) == null) {
         options.subView = {};
       }
-      this.subView = options.subView.partial || this.subview;
+      this.subView = options.subView.partial || this.subView;
       Collection.__super__.constructor.call(this, options);
       this.listenTo(this.collection, 'add', this.addModel);
       this.listenTo(this.collection, 'remove', this.removeModel);
@@ -336,6 +336,116 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
+  Amoeba.View.PaginatedCollection = (function(_super) {
+
+    __extends(PaginatedCollection, _super);
+
+    PaginatedCollection.prototype.collectionView = Amoeba.View.Collection;
+
+    function PaginatedCollection(options) {
+      if (options == null) {
+        options = {};
+      }
+      this.removePage = __bind(this.removePage, this);
+
+      this.remove = __bind(this.remove, this);
+
+      this.add = __bind(this.add, this);
+
+      this.render = __bind(this.render, this);
+
+      this.pages = {};
+      this.currentPage = options.page || 1;
+      this.collectionView = options.collectionView || this.collectionView;
+      this.container = options.container;
+      PaginatedCollection.__super__.constructor.call(this, options);
+      this.listenTo(this.container, 'add', this.add);
+      this.listenTo(this.container, 'remove', this.remove);
+      this.listenTo(this.container, 'removePage', this.removePage);
+    }
+
+    PaginatedCollection.prototype.render = function(page, collection) {
+      var $pageEl;
+      if (!this.pages[page]) {
+        this.createPage(page, collection);
+      }
+      if (this.pages[page].rendered) {
+        return;
+      }
+      $pageEl = this.getPageEl(page);
+      if ($pageEl.length) {
+        $pageEl.removeClass('hide');
+      } else {
+        $pageEl = this.pages[page].view.render().$el.addClass("page-" + page);
+        this.$el.append($pageEl);
+      }
+      if (page !== this.currentPage) {
+        if (this.pages[this.currentPage]) {
+          this.getPageEl(this.currentPage).addClass('hide');
+          this.pages[this.currentPage].rendered = false;
+        }
+        this.currentPage = page;
+      }
+      this.pages[page].rendered = true;
+      this.trigger('render', page);
+      return this;
+    };
+
+    PaginatedCollection.prototype.refresh = function(page) {
+      var _this = this;
+      if (page == null) {
+        page = this.currentPage;
+      }
+      if (this.pages[page]) {
+        this.pages[page].rendered = false;
+        if (this.pages[page].collection.dirty) {
+          this.removePage(page);
+        }
+      }
+      this.container.fetch(page, {
+        silent: true,
+        success: function(collection) {
+          return _this.render(page, collection);
+        }
+      });
+      return this;
+    };
+
+    PaginatedCollection.prototype.add = function(page, model) {};
+
+    PaginatedCollection.prototype.remove = function(page, model) {};
+
+    PaginatedCollection.prototype.removePage = function(page) {
+      this.pages[page].view.remove();
+      delete this.pages[page];
+      return this;
+    };
+
+    PaginatedCollection.prototype.createPage = function(page, collection) {
+      return this.pages[page] = {
+        collection: collection,
+        view: this._render(this.collectionView, _.extend(this.options, {
+          collection: collection
+        })),
+        rendered: false
+      };
+    };
+
+    PaginatedCollection.prototype.getPageEl = function(page) {
+      return this.$(".page-" + page);
+    };
+
+    return PaginatedCollection;
+
+  })(Amoeba.View);
+
+}).call(this);
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
   Amoeba.View.ScrollableCollection = (function(_super) {
 
     __extends(ScrollableCollection, _super);
@@ -383,114 +493,6 @@
     return ScrollableCollection;
 
   })(Amoeba.View.Collection);
-
-}).call(this);
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  Amoeba.View.PaginatedCollection = (function(_super) {
-
-    __extends(PaginatedCollection, _super);
-
-    PaginatedCollection.prototype.subView = Amoeba.View.Collection;
-
-    function PaginatedCollection(options) {
-      if (options == null) {
-        options = {};
-      }
-      this.removePage = __bind(this.removePage, this);
-
-      this.remove = __bind(this.remove, this);
-
-      this.add = __bind(this.add, this);
-
-      this.render = __bind(this.render, this);
-
-      this.pages = {};
-      this.currentPage = options.page || 1;
-      PaginatedCollection.__super__.constructor.call(this, options);
-      this.listenTo(this.collection, 'add', this.add);
-      this.listenTo(this.collection, 'remove', this.remove);
-      this.listenTo(this.collection, 'removePage', this.removePage);
-    }
-
-    PaginatedCollection.prototype.render = function(page, collection) {
-      var $pageEl;
-      if (!this.pages[page]) {
-        this.createPage(page, collection);
-      }
-      if (this.pages[page].rendered) {
-        return;
-      }
-      $pageEl = this.getPageEl(page);
-      if ($pageEl) {
-        $pageEl.show();
-      } else {
-        $pageEl = this.pages[page].render().$el.addClass("page-" + page);
-        this.$el.append($pageEl);
-      }
-      if (this.pages[this.currentPage]) {
-        this.getPageEl(this.currentPage).hide();
-        this.pages[this.currentPage].rendered = false;
-      }
-      if (page !== this.currentPage) {
-        this.currentPage = page;
-      }
-      this.pages[page].rendered = true;
-      this.trigger('render', page);
-      return this;
-    };
-
-    PaginatedCollection.prototype.refresh = function(page) {
-      var _this = this;
-      if (page == null) {
-        page = this.currentPage;
-      }
-      if (this.pages[page]) {
-        this.pages[page].rendered = false;
-        if (this.pages[page].dirty) {
-          this.removePage(page);
-        }
-      }
-      this.collection.fetch(page, {
-        silent: true,
-        success: function(collection) {
-          return _this.render(page, collection);
-        }
-      });
-      return this;
-    };
-
-    PaginatedCollection.prototype.add = function(page, model) {};
-
-    PaginatedCollection.prototype.remove = function(page, model) {};
-
-    PaginatedCollection.prototype.removePage = function(page) {
-      this.pages[page].view.remove();
-      delete this.pages[page];
-      return this;
-    };
-
-    PaginatedCollection.prototype.createPage = function(page, collection) {
-      return this.pages[page] = {
-        collection: collection,
-        view: this._render(this.subView, _.extend(this.options, {
-          collection: collection
-        })),
-        rendered: false
-      };
-    };
-
-    PaginatedCollection.prototype.getPageEl = function(page) {
-      return this.$(".page-" + page);
-    };
-
-    return PaginatedCollection;
-
-  })(Amoeba.View);
 
 }).call(this);
 
@@ -794,7 +796,7 @@
       }
       page = parseInt(page);
       if (this.pages[page] && !this.pages[page].dirty && !options.force) {
-        return typeof success === "function" ? success(this.pages[page], this, this.pages[page].toJSON(), options) : void 0;
+        return typeof options.success === "function" ? options.success(this.pages[page], this, this.pages[page].toJSON(), options) : void 0;
       }
       success = options.success;
       options.success = function(resp) {

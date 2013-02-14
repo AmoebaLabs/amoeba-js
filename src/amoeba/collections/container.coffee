@@ -73,7 +73,7 @@ class Amoeba.Collection.Container extends Amoeba.Module
     page = parseInt(page)
 
     if @pages[page] and not @pages[page].dirty and not options.force
-      return success?(@pages[page], @, @pages[page].toJSON(), options)
+      return options.success?(@pages[page], @, @pages[page].toJSON(), options)
 
     success = options.success
     options.success = (resp) =>

@@ -47,6 +47,7 @@ describe('Amoeba.View.Collection', function() {
 
   })(Amoeba.View.Collection);
   beforeEach(function() {
+    sinon.stub(Backbone.history, 'start');
     Amoeba.App.start();
     model = new Backbone.Model({
       id: 1
@@ -58,6 +59,9 @@ describe('Amoeba.View.Collection', function() {
         partial: SubView
       }
     });
+  });
+  afterEach(function() {
+    return Backbone.history.start.restore();
   });
   describe('#render', function() {
     it('should load up the subviews', function() {
