@@ -13,7 +13,7 @@ describe 'Amoeba.App', ->
       Amoeba.App.start()
 
       spy.should.have.been.calledWithNew
-      spy.should.have.been.calledWith({})
+      spy.should.have.been.calledWith(Amoeba.App.defaults)
 
     it 'should start the Backbone history with the supported options', ->
       options =
@@ -22,7 +22,8 @@ describe 'Amoeba.App', ->
         silent: true
         root: '/'
 
-      Amoeba.App.start(options)
+      # Note: This does not deep-copy options, and the constructor will modify options, so hopefully that's okay
+      Amoeba.App.start(_.clone(options))
 
       startStub.should.have.been.calledWith(options)
 
