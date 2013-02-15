@@ -2,7 +2,7 @@ describe 'Amoeba.Collection.Container', ->
   container = undefined
 
   beforeEach ->
-    container = new Amoeba.Collection.Container
+    container = new Amoeba.Collection.Container()
     container.url = '/test'
 
   describe 'collection events', ->
@@ -31,6 +31,17 @@ describe 'Amoeba.Collection.Container', ->
       shiftStub.should.have.been.calledWith(1)
 
   describe '#resetPage', ->
+    it 'should set the model on the collection if the container specifies it', ->
+      class TestModel extends Backbone.Model
+      class TestContainer extends Amoeba.Collection.Container
+        model: TestModel
+
+      container = new TestContainer()
+      container.url = '/test'
+      response = [id: 1]
+      container.resetPage(1, response)
+      container.pages[1].model.should.equal TestModel
+
     it 'should clear the dirty state', ->
       response = [id: 1]
       container.resetPage(1, response)

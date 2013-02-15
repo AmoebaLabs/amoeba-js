@@ -5,10 +5,7 @@ describe('Amoeba.Collection.Growable', function() {
   beforeEach(function() {
     collection = new Amoeba.Collection.Growable();
     collection.url = '/test';
-    return fetchStub = sinon.stub(Amoeba.Collection.Growable.__super__, 'fetch');
-  });
-  afterEach(function() {
-    return Amoeba.Collection.Growable.__super__.fetch.restore();
+    return fetchStub = sinon.stub(collection, 'fetch');
   });
   describe('#reset', function() {
     return it('should clear the next page', function() {
@@ -17,7 +14,7 @@ describe('Amoeba.Collection.Growable', function() {
       return expect(collection.nextPage).to.be.undefined;
     });
   });
-  describe('#fetch', function() {
+  describe('#fetchNextPage', function() {
     var nextPage;
     nextPage = void 0;
     beforeEach(function() {
@@ -25,13 +22,13 @@ describe('Amoeba.Collection.Growable', function() {
       return collection.nextPage = nextPage;
     });
     it('should not remove the models', function() {
-      collection.fetch();
+      collection.fetchNextPage();
       return fetchStub.should.have.been.calledWithMatch({
         remove: false
       });
     });
     return it('should call with the correct url', function() {
-      collection.fetch();
+      collection.fetchNextPage();
       return fetchStub.should.have.been.calledWithMatch({
         url: "/test?page=" + nextPage
       });

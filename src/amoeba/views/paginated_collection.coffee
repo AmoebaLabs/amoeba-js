@@ -7,13 +7,14 @@ class Amoeba.View.PaginatedCollection extends Amoeba.View
     @currentPage = options.page or 1
     @collectionView = options.collectionView or @collectionView
     @container = options.container
-    super(options)
 
-    @listenTo(@container, 'add', @add)
-    @listenTo(@container, 'remove', @remove)
+    @listenTo(@container, 'add', @addModel)
+    @listenTo(@container, 'remove', @removeModel)
     @listenTo(@container, 'removePage', @removePage)
 
-  render: (page, collection) =>
+    super(options)
+
+  renderPage: (page, collection) =>
     @createPage(page, collection) unless @pages[page]
     return if @pages[page].rendered
 
@@ -31,21 +32,23 @@ class Amoeba.View.PaginatedCollection extends Amoeba.View
       @currentPage = page
 
     @pages[page].rendered = true
-    @trigger('render', page)
+    @trigger('renderPage', page)
     @
 
-  refresh: (page = @currentPage) ->
+  refresh: (page = @currentPage, options) ->
+    options ?= {}
     if @pages[page]
       @pages[page].rendered = false
       @removePage(page) if @pages[page].collection.dirty
 
     @container.fetch page, silent: true, success: (collection) =>
-      @render(page, collection)
+      @renderPage(page, collection)
+      options.success?(page)
     @
 
-  add: (page, model) =>
+  addModel: (page, model) =>
 
-  remove: (page, model) =>
+  removeModel: (page, model) =>
 
   removePage: (page) =>
     @pages[page].view.remove()

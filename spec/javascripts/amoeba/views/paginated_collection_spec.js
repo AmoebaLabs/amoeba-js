@@ -26,34 +26,34 @@ describe('Amoeba.View.PaginatedCollection', function() {
     });
     return view.currentPage.should.equal(5);
   });
-  describe('#render', function() {
+  describe('#renderPage', function() {
     it('should create the page', function() {
       var spy;
       spy = sinon.spy(view, 'createPage');
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       view.pages[1].should.not.be.undefined;
       return spy.should.have.been.calledWith(1, container.pages[1]);
     });
     it('should not rerender the page', function() {
       var spy;
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       spy = sinon.spy(view, 'getPageEl');
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       return spy.should.not.have.been.called;
     });
     it('should show the new page if it exists', function() {
       var $page;
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       $page = view.getPageEl(1).addClass('hide');
       view.refresh();
       return $page.hasClass('hide').should.be["false"];
     });
     it('should add the page number to the new el', function() {
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       return view.getPageEl(1).hasClass('page-1').should.be["true"];
     });
     it('should append the new page if it does not exist', function() {
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       return view.$('.page-1').should.exist;
     });
     describe('swtiching pages', function() {
@@ -64,7 +64,7 @@ describe('Amoeba.View.PaginatedCollection', function() {
           }
         ]);
         view.refresh();
-        return view.render(2, container.pages[2]);
+        return view.renderPage(2, container.pages[2]);
       });
       it('should hide the current page', function() {
         view.getPageEl(1).hasClass('hide').should.be["true"];
@@ -75,14 +75,14 @@ describe('Amoeba.View.PaginatedCollection', function() {
       });
     });
     it('should render the new page', function() {
-      view.render(1, container.pages[1]);
+      view.renderPage(1, container.pages[1]);
       return view.pages[1].rendered.should.be["true"];
     });
     return it('should trigger a render event', function() {
       var callback;
       callback = sinon.spy();
-      view.on('render', callback);
-      view.render(1, container.pages[1]);
+      view.on('renderPage', callback);
+      view.renderPage(1, container.pages[1]);
       return callback.should.have.been.calledWith(1);
     });
   });
@@ -116,7 +116,7 @@ describe('Amoeba.View.PaginatedCollection', function() {
     });
     return it('should render the page', function() {
       var spy;
-      spy = sinon.spy(view, 'render');
+      spy = sinon.spy(view, 'renderPage');
       view.refresh();
       return spy.should.have.been.calledWith(1, container.pages[1]);
     });
@@ -138,6 +138,8 @@ describe('Amoeba.View.PaginatedCollection', function() {
       return view.getPageEl(1).should.not.exist;
     });
   });
+  describe('#addModel');
+  describe('#removeModel');
   return describe('#createPage', function() {
     it('should render the view', function() {
       var spy;

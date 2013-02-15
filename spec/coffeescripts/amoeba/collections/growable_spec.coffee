@@ -4,10 +4,7 @@ describe 'Amoeba.Collection.Growable', ->
   beforeEach ->
     collection = new Amoeba.Collection.Growable()
     collection.url = '/test'
-    fetchStub = sinon.stub(Amoeba.Collection.Growable.__super__, 'fetch')
-
-  afterEach ->
-    Amoeba.Collection.Growable.__super__.fetch.restore()
+    fetchStub = sinon.stub(collection, 'fetch')
 
   describe '#reset', ->
     it 'should clear the next page', ->
@@ -15,7 +12,7 @@ describe 'Amoeba.Collection.Growable', ->
       collection.reset()
       expect(collection.nextPage).to.be.undefined
 
-  describe '#fetch', ->
+  describe '#fetchNextPage', ->
     nextPage = undefined
 
     beforeEach ->
@@ -23,12 +20,12 @@ describe 'Amoeba.Collection.Growable', ->
       collection.nextPage = nextPage
 
     it 'should not remove the models', ->
-      collection.fetch()
+      collection.fetchNextPage()
 
       fetchStub.should.have.been.calledWithMatch remove: false
 
     it 'should call with the correct url', ->
-      collection.fetch()
+      collection.fetchNextPage()
 
       fetchStub.should.have.been.calledWithMatch url: "/test?page=#{nextPage}"
 

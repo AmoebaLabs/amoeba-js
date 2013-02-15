@@ -5,7 +5,7 @@ class Amoeba.Collection.Growable extends Backbone.Collection
     super
   hasMorePages: ->
     _.result(@, 'nextPage')?
-  fetch: (options = {}) ->
+  fetchNextPage: (options = {}) ->
     url = _.result(@, 'url')
 
     throw 'No url specified' unless url
@@ -17,4 +17,4 @@ class Amoeba.Collection.Growable extends Backbone.Collection
       remove: false
     )
 
-    super(options)
+    @fetch(options)

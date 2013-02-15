@@ -14,38 +14,38 @@ describe 'Amoeba.View.PaginatedCollection', ->
     view = new Amoeba.View.PaginatedCollection(page: 5, container: container)
     view.currentPage.should.equal 5
 
-  describe '#render', ->
+  describe '#renderPage', ->
     it 'should create the page', ->
       spy = sinon.spy(view, 'createPage')
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       view.pages[1].should.not.be.undefined
       spy.should.have.been.calledWith 1, container.pages[1]
 
     it 'should not rerender the page', ->
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       spy = sinon.spy(view, 'getPageEl')
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       spy.should.not.have.been.called
 
     it 'should show the new page if it exists', ->
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       $page = view.getPageEl(1).addClass('hide')
       view.refresh()
       $page.hasClass('hide').should.be.false
 
     it 'should add the page number to the new el', ->
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       view.getPageEl(1).hasClass('page-1').should.be.true
 
     it 'should append the new page if it does not exist', ->
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       view.$('.page-1').should.exist
 
     describe 'swtiching pages', ->
       beforeEach ->
         container.resetPage(2, [id: 2])
         view.refresh()
-        view.render(2, container.pages[2])
+        view.renderPage(2, container.pages[2])
 
       it 'should hide the current page', ->
         view.getPageEl(1).hasClass('hide').should.be.true
@@ -55,13 +55,13 @@ describe 'Amoeba.View.PaginatedCollection', ->
         view.currentPage.should.equal 2
 
     it 'should render the new page', ->
-      view.render(1, container.pages[1])
+      view.renderPage(1, container.pages[1])
       view.pages[1].rendered.should.be.true
 
     it 'should trigger a render event', ->
       callback = sinon.spy()
-      view.on('render', callback)
-      view.render(1, container.pages[1])
+      view.on('renderPage', callback)
+      view.renderPage(1, container.pages[1])
       callback.should.have.been.calledWith 1
 
   describe '#refresh', ->
@@ -87,7 +87,7 @@ describe 'Amoeba.View.PaginatedCollection', ->
       spy.should.have.been.calledWithMatch(1, silent: true)
 
     it 'should render the page', ->
-      spy = sinon.spy(view, 'render')
+      spy = sinon.spy(view, 'renderPage')
       view.refresh()
       spy.should.have.been.calledWith 1, container.pages[1]
 
@@ -106,6 +106,9 @@ describe 'Amoeba.View.PaginatedCollection', ->
       view.removePage(1)
       spy.should.have.been.called
       view.getPageEl(1).should.not.exist
+
+  describe '#addModel'
+  describe '#removeModel'
 
   describe '#createPage', ->
     it 'should render the view', ->

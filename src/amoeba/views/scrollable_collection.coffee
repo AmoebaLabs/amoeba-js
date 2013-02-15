@@ -13,7 +13,7 @@ class Amoeba.View.ScrollableCollection extends Amoeba.View.Collection
 
     if @needsToLoad() and @collection.hasMorePages()
       @loading = true
-      @collection.fetch success: @onLoad, error: @onLoad
+      @collection.fetchNextPage success: @onLoad, error: @onLoad
 
   needsToLoad: ->
     winHeight = $(window).height()

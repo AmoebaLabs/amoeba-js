@@ -1,9 +1,11 @@
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 describe('Amoeba.Collection.Container', function() {
   var container;
   container = void 0;
   beforeEach(function() {
-    container = new Amoeba.Collection.Container;
+    container = new Amoeba.Collection.Container();
     return container.url = '/test';
   });
   describe('collection events', function() {
@@ -42,6 +44,42 @@ describe('Amoeba.Collection.Container', function() {
     });
   });
   describe('#resetPage', function() {
+    it('should set the model on the collection if the container specifies it', function() {
+      var TestContainer, TestModel, response;
+      TestModel = (function(_super) {
+
+        __extends(TestModel, _super);
+
+        function TestModel() {
+          return TestModel.__super__.constructor.apply(this, arguments);
+        }
+
+        return TestModel;
+
+      })(Backbone.Model);
+      TestContainer = (function(_super) {
+
+        __extends(TestContainer, _super);
+
+        function TestContainer() {
+          return TestContainer.__super__.constructor.apply(this, arguments);
+        }
+
+        TestContainer.prototype.model = TestModel;
+
+        return TestContainer;
+
+      })(Amoeba.Collection.Container);
+      container = new TestContainer();
+      container.url = '/test';
+      response = [
+        {
+          id: 1
+        }
+      ];
+      container.resetPage(1, response);
+      return container.pages[1].model.should.equal(TestModel);
+    });
     it('should clear the dirty state', function() {
       var response;
       response = [
