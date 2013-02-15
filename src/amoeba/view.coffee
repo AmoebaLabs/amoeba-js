@@ -3,6 +3,7 @@ class Amoeba.View extends Backbone.View
     @locals = options.locals
     @parent = options.parent
     @template = new Amoeba.Template(@template) if @template
+    @helpers = Amoeba.app.helpers
     super
 
   _render: (partial, options = {}) ->

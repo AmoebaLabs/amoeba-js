@@ -3,11 +3,9 @@ module.exports = function(grunt) {
     pkg: '<json:package.json>',
     meta: {
       buildDirectory: '.',
-      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+      banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
+        ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>;' +
+        ' Licensed <%= pkg.license %>\n' + ' * <%= pkg.homepage %> */'
     },
     snockets: {
       core: {
@@ -27,6 +25,18 @@ module.exports = function(grunt) {
         options: {
           preserve_dirs: true,
           base_path: 'spec/coffeescripts'
+        }
+      }
+    },
+    codo: {
+      dist: {
+        target: 'src',
+        options: {
+          name: 'Amoeba.js',
+          title: 'Amoeba.js Documentation',
+          readme: 'README.md',
+          analytics: 'false',
+          'output-dir': 'docs'
         }
       }
     },
@@ -73,6 +83,34 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-barkeep');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
+  grunt.registerMultiTask('codo', 'Generate source documents from CoffeeScript files.', function(){
+    var target  = this.data.target,
+        binary  = this.data.binary || 'node_modules/codo/bin/codo',
+        options = this.data.options || {},
+        args    = [binary],
+        done    = this.async();
+
+    Object.keys(options).forEach(function(opt) {
+      args.push('--' + opt + '=' + options[opt]);
+    });
+    args.push(target);
+
+    grunt.verbose.write('Writing documentation from target '+target+'...');
+
+    grunt.util.spawn({
+      cmd: 'coffee',
+      args: args
+    }, function(err, result, code) {
+      if (code === 0) {
+        grunt.verbose.ok();
+      } else {
+        grunt.log.error(result);
+        grunt.fail.warn('CoffeeDoc failed. You may need to install coffee-script via: `npm install -g coffee-script`');
+      }
+      done(!code);
+    });
+  });
+
   grunt.registerTask('mocha', 'run mocha-phantomjs', function () {
     var done = this.async();
     var mocha = grunt.util.spawn({
@@ -89,5 +127,5 @@ module.exports = function(grunt) {
     mocha.stderr.pipe(process.stderr);
   });
 
-  grunt.registerTask('default', 'snockets growl:snockets coffee growl:coffee mocha min copy');
+  grunt.registerTask('default', 'snockets growl:snockets coffee growl:coffee codo mocha min copy');
 };

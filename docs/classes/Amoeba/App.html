@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>Amoeba.js Documentation</title>
+  <link rel='stylesheet' href='..&#47;..&#47;assets/codo.css' type='text/css'>
+  <script src='..&#47;..&#47;assets/codo.js'></script>
+  <script src='..&#47;..&#47;assets/search_data.js'></script>
+  <script>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'false']);
+    _gaq.push(['_trackPageview']);
+  
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+</head>
+  <body>
+    <div id='base' data-path='..&#47;..&#47;'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='..&#47;..&#47;README.md.html' title='Amoeba.js'>Amoeba.js</a>
+    &raquo;
+    <a href='..&#47;..&#47;class_index.html' title='Index'>Index</a>
+    &raquo;
+    <span class='title'>Amoeba</span>
+    &raquo;
+    <span class='title'>App</span>
+    <nav>
+      <ul>
+        <li class='noframes'>
+          (<a class='noframes' href='#'>no frames</a>)
+        </li>
+      </ul>
+    </nav>
+    <div id='search'>
+      <a id='class_list_link' href='..&#47;..&#47;class_list.html'>Classes</a>
+      <a id='file_list_link' href='..&#47;..&#47;file_list.html'>Files</a>
+      <a id='method_list_link' href='..&#47;..&#47;method_list.html'>Methods</a>
+      <a id='extra_list_link' href='..&#47;..&#47;extra_list.html'>Extras</a>
+    </div>
+  </div>
+  <iframe id='search_frame'></iframe>
+  <div id='fuzzySearch'>
+    <input type='text'>
+    <ol></ol>
+  </div>
+  <div id='help'>
+    <p>
+      Quickly fuzzy find classes, mixins, methods, file:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-T</span>
+        Open fuzzy finder dialog
+      </li>
+    </ul>
+    <p>
+      In frame mode you can toggle the list naviation frame on the left side:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-L</span>
+        Toggle list view
+      </li>
+    </ul>
+    <p>
+      You can focus a list in frame mode or toggle a tab in frameless mode:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-C</span>
+        Class list
+      </li>
+      <li>
+        <span>Ctrl-I</span>
+        Mixin list
+      </li>
+      <li>
+        <span>Ctrl-F</span>
+        File list
+      </li>
+      <li>
+        <span>Ctrl-M</span>
+        Method list
+      </li>
+      <li>
+        <span>Ctrl-E</span>
+        Extras list
+      </li>
+    </ul>
+    <p>
+      You can focus and blur the search input:
+    </p>
+    <ul>
+      <li>
+        <span>Ctrl-S</span>
+        Focus search input
+      </li>
+      <li>
+        <span>Esc</span>
+        Blur search input
+      </li>
+    </ul>
+    <p>
+      In frameless mode you can close the list tab:
+    </p>
+    <ul>
+      <li>
+        <span>Esc</span>
+        Close list tab
+      </li>
+    </ul>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        Amoeba.App
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>src&#47;amoeba&#47;app.coffee</td>
+        </tr>
+        <tr>
+          <td>Inherits:</td>
+          <td>
+            <a href='..&#47;..&#47;classes/Amoeba&#47;Module.html'>Amoeba.Module</a>
+          </td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>App is the main object. Think of it like a container for your application settings, helpers, and
+routers, as well as a way to automatically initialize and configure Backbone. It&#39;s important not to
+try and <a href='../../classes/Amoeba/App.html#start-class'>Amoeba.App.start</a> the App instance until you&#39;re certain the rest of your code (views, etc) are ]
+already defined, and jQuery is ready.</p><p>See the <a href='../../classes/Amoeba/App.html#constructor-instance'>#constructor</a> documentation for specific options.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Create a new App and initialize it after jQuery loads
+    </h4>
+    <pre><code class='coffee'>class MySite.App extends Amoeba.App
+  initialize: -&gt;
+    @myRouter = new MySite.MyRouter()
+
+jQuery ($) -&gt;
+  MySite.app = MySite.App.start
+    pushState: true
+    viewPath: MySite.Views</code></pre>
+  </div>
+</div>
+<div class='tags'>
+</div>
+      <h2>Class Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#start-class'>
+        + (void) <strong>start</strong>(options = {})
+      </a>
+    </span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+</ul>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#constructor-instance'>
+        - (void) <strong>constructor</strong>(options = {})
+      </a>
+    </span>
+    <span class='constructor note title'>Constructor</span>
+    <span class='desc'>
+      
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#initialize-instance'>
+        - (void) <strong>initialize</strong>()
+      </a>
+    </span>
+    <span class='desc'>
+      This method is intensionally left empty for the user of the library to subclass and implemenet.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#requestHandler-instance'>
+        - (void) <strong>requestHandler</strong>(e)
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      Fired whenever a click event is generated.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#bindRequestListner-instance'>
+        - (void) <strong>bindRequestListner</strong>()
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      This method will bind to all click events and listen for click events and fire the <a href='../../classes/Amoeba/App.html#requestHandler-instance'>#requestHandler</a> function.
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#unbindRequestListener-instance'>
+        - (void) <strong>unbindRequestListener</strong>()
+      </a>
+    </span>
+    <span class='bound note title'>Bound</span>
+    <span class='desc'>
+      This method will unbind the click event hijacker setup by <a href='../../classes/Amoeba/App.html#bindRequestListner-instance'>#bindRequestListner</a>.
+    </span>
+  </li>
+</ul>
+      <h2>
+        <small>Inherited Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods inherited from
+        <a href='..&#47;..&#47;classes/Amoeba&#47;Module.html'>Amoeba.Module</a>
+      </h3>
+      <p class='inherited'>
+                <a href='..&#47;..&#47;classes/Amoeba&#47;Module.html#extend-class'>.extend</a>,
+        <a href='..&#47;..&#47;classes/Amoeba&#47;Module.html#include-class'>.include</a>
+      </p>
+      <h2>Class Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='start-class'>
+      + (void) <strong>start</strong>(options = {})
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-instance'>
+      - (void) <strong>constructor</strong>(options = {})
+    </p>
+    <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the app&#39;s settings</span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (option):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>viewPath</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the base object under which your app&#39;s views are contained</span>
+    </li>
+    <li>
+      <span class='name'>templatePath</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the base object under which to find your app&#39;s templates</span>
+    </li>
+    <li>
+      <span class='name'>hijackRequests</span>
+      <span class='type'>
+        (<tt>Boolean</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>Hijack click events on &quot;a&quot; tags to fire associated routes automatically (default true)</span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='initialize-instance'>
+      - (void) <strong>initialize</strong>()
+    </p>
+    <div class='docstring'>
+  <p>This method is intensionally left empty for the user of the library to subclass and implemenet.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='requestHandler-instance'>
+      - (void) <strong>requestHandler</strong>(e)
+      (bound)
+    </p>
+    <div class='docstring'>
+  <p>Fired whenever a click event is generated. This will search the DOM for the nearest <code>&lt;a&gt;</code> tag to the event target, and check its href against known routes. If such a route exists, it will navigate to that page. Otherwise, it will reach out to the server.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>e</span>
+      <span class='type'>
+        (<tt>Object</tt>)
+      </span>
+      &mdash;
+      <span class='desc'>the jQuery event fired from a click event</span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='bindRequestListner-instance'>
+      - (void) <strong>bindRequestListner</strong>()
+      (bound)
+    </p>
+    <div class='docstring'>
+  <p>This method will bind to all click events and listen for click events and fire the <a href='../../classes/Amoeba/App.html#requestHandler-instance'>#requestHandler</a> function. It is called during the constructor if <code>hijackRequests = true</code>.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='unbindRequestListener-instance'>
+      - (void) <strong>unbindRequestListener</strong>()
+      (bound)
+    </p>
+    <div class='docstring'>
+  <p>This method will unbind the click event hijacker setup by <a href='../../classes/Amoeba/App.html#bindRequestListner-instance'>#bindRequestListner</a>.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  Generated on
+  Thu Feb 14 2013 19:32:42 GMT-0800 (PST)
+  by
+  <a href='https://github.com/netzpirat/codo' title='CoffeeScript API documentation generator'>Codo</a>
+  v1.5.4
+  (Node.js v0.8.18).
+  &#10034;
+  Press Ctrl-h to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/#!/netzpirat'>@netzpirat</a>
+  &#10034;
+  <a href='https://mksoft.ch'>mksoft.ch</a>
+</div>
+  </body>
+</html>

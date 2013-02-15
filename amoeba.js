@@ -9,6 +9,16 @@
 
 (function() {
 
+  Amoeba.log = function(ln) {
+    if (Amoeba.debug) {
+      return console.log(ln);
+    }
+  };
+
+}).call(this);
+
+(function() {
+
   Amoeba.Util = {
     appendQueryParam: function(url, param) {
       var appendChar;
@@ -107,9 +117,6 @@
       if (options == null) {
         options = {};
       }
-      if (this.currentView != null) {
-        throw "Render already called with " + this.currentView;
-      }
       view = Amoeba.app.lookupContext.find(partial);
       return Amoeba.app.currentView = this.currentView = new view(options);
     };
@@ -204,6 +211,7 @@
       if (this.template) {
         this.template = new Amoeba.Template(this.template);
       }
+      this.helpers = Amoeba.app.helpers;
       View.__super__.constructor.apply(this, arguments);
     }
 
@@ -502,6 +510,16 @@
 
 (function() {
 
+  Backbone.History.prototype.hasUrl = function(fragment) {
+    return _.any(this.handlers, function(handler) {
+      return handler.route.test(fragment);
+    });
+  };
+
+}).call(this);
+
+(function() {
+
   Amoeba.LookupContext = (function() {
 
     function LookupContext(viewPath) {
@@ -612,8 +630,30 @@
 
 }).call(this);
 
+
+/*
+App is the main object. Think of it like a container for your application settings, helpers, and
+routers, as well as a way to automatically initialize and configure Backbone. It's important not to
+try and {Amoeba.App.start} the App instance until you're certain the rest of your code (views, etc) are ]
+already defined, and jQuery is ready.
+
+See the {#constructor} documentation for specific options.
+
+@example Create a new App and initialize it after jQuery loads
+  class MySite.App extends Amoeba.App
+    initialize: ->
+      @myRouter = new MySite.MyRouter()
+
+  jQuery ($) ->
+    MySite.app = MySite.App.start
+      pushState: true
+      viewPath: MySite.Views
+*/
+
+
 (function() {
-  var __hasProp = {}.hasOwnProperty,
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   Amoeba.App = (function(_super) {
@@ -622,30 +662,105 @@
 
     App.include(Backbone.Events);
 
+    App.defaults = {
+      hijackRequests: true
+    };
+
+    App.settings = {
+      linkSelector: 'a'
+    };
+
+    /*
+      @param [Object] options the app's settings
+      @option options [Object] viewPath the base object under which your app's views are contained
+      @option options [Object] templatePath the base object under which to find your app's templates
+      @option options [Boolean] hijackRequests Hijack click events on "a" tags to fire associated routes
+        automatically (default true)
+    */
+
+
     function App(options) {
       if (options == null) {
         options = {};
       }
+      this.unbindRequestListener = __bind(this.unbindRequestListener, this);
+
+      this.bindRequestListner = __bind(this.bindRequestListner, this);
+
+      this.requestHandler = __bind(this.requestHandler, this);
+
+      _.defaults(options, this.constructor.defaults);
       this.helpers = new Amoeba.Helpers();
       this.lookupContext = new Amoeba.LookupContext(options.viewPath);
       if (options.templatePath) {
         this.templatePath = options.templatePath;
       }
-      this.initialize.apply(this, arguments);
+      this.hijackRequests = options.hijackRequests;
+      if (this.hijackRequests) {
+        this.bindRequestListner();
+      }
       this;
 
     }
 
     App.start = function(options) {
+      var backboneOpts;
       if (options == null) {
         options = {};
       }
       Amoeba.app = new this(options);
-      Backbone.history.start(_.pick(options, 'pushState', 'hashChange', 'silent', 'root'));
+      Amoeba.app.initialize(options);
+      backboneOpts = _.pick(options, 'pushState', 'hashChange', 'silent', 'root');
+      Backbone.history.start(backboneOpts);
       return Amoeba.app;
     };
 
+    /*
+      This method is intensionally left empty for the user of the library to subclass and implemenet.
+    */
+
+
     App.prototype.initialize = function() {};
+
+    /*
+      Fired whenever a click event is generated. This will search the DOM for the nearest `<a>` tag to
+        the event target, and check its href against known routes. If such a route exists, it will
+        navigate to that page. Otherwise, it will reach out to the server.
+      @param [Object] e the jQuery event fired from a click event
+    */
+
+
+    App.prototype.requestHandler = function(e) {
+      var requestedPath;
+      requestedPath = $(e.target).closest('a').attr('href').replace(/^\//, '');
+      Amoeba.log("Initiating route to '" + requestedPath + "'");
+      if (Backbone.history.hasUrl(requestedPath)) {
+        Backbone.history.navigate(requestedPath, {
+          trigger: true
+        });
+        return false;
+      }
+      return true;
+    };
+
+    /*
+      This method will bind to all click events and listen for click events and fire the
+        {#requestHandler} function. It is called during the constructor if `hijackRequests = true`.
+    */
+
+
+    App.prototype.bindRequestListner = function() {
+      return $(document).on('click', this.constructor.settings.linkSelector, this.requestHandler);
+    };
+
+    /*
+      This method will unbind the click event hijacker setup by {#bindRequestListner}.
+    */
+
+
+    App.prototype.unbindRequestListener = function() {
+      return $(document).off('click', this.constructor.settings.linkSelector, this.requestHandler);
+    };
 
     return App;
 
