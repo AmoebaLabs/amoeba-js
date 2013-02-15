@@ -21,6 +21,8 @@ See the {#constructor} documentation for specific options.
 ###
 class Amoeba.App extends Amoeba.Module
   @include Backbone.Events
+  @defaults:
+    hijackRequests: true
   @settings:
     linkSelector: 'a'
 
@@ -32,10 +34,10 @@ class Amoeba.App extends Amoeba.Module
     automatically (default true)
   ###
   constructor: (options = {}) ->
-    _.defaults(options, hijackRequests: true)
+    _.defaults(options, @constructor.defaults)
 
     @helpers = new Amoeba.Helpers()
-    @lookupContext = new Amoeba.LookupContext(options.viewPath) if options.viewPath
+    @lookupContext = new Amoeba.LookupContext(options.viewPath)
     @templatePath = options.templatePath if options.templatePath
     @hijackRequests = options.hijackRequests
     @bindRequestListner() if @hijackRequests
@@ -45,7 +47,8 @@ class Amoeba.App extends Amoeba.Module
   @start: (options = {}) ->
     Amoeba.app = new @(options)
     Amoeba.app.initialize(options)
-    Backbone.history.start(_.pick(options, 'pushState', 'hashChange', 'silent', 'root'))
+    backboneOpts = _.pick(options, 'pushState', 'hashChange', 'silent', 'root')
+    Backbone.history.start(backboneOpts)
     Amoeba.app
 
   ###

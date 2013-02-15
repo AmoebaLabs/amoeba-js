@@ -1,19 +1,29 @@
 #= require ../view
 
 class Amoeba.View.Collection extends Amoeba.View
-  subviews: []
+  subView: Amoeba.View
   constructor: (options = {}) ->
+    @subviews = []
     options.subView ?= {}
+    @subView = options.subView.partial or @subView
     super(options)
 
-    @collection.on('add', @add.bind(@))
-    @collection.on('remove', @remove.bind(@))
+    @listenTo(@collection, 'add', @addModel)
+    @listenTo(@collection, 'remove', @removeModel)
 
-  render: ->
+  render: =>
+    return if @rendered
+
     @extractSubViews()
-    @$el.html(@renderSubViews())
+    @$el.html(@renderSubViews()) if @subviews.length
     @rendered = true
     @trigger('render')
+    @
+
+  refresh: ->
+    @subviews = []
+    @rendered = false
+    @collection.fetch(success: @render, silent: true)
     @
 
   extractSubViews: ->
@@ -30,17 +40,18 @@ class Amoeba.View.Collection extends Amoeba.View
       fragment.appendChild(subview.render().el)
     fragment
 
-  add: (model) ->
+  addModel: (model) =>
     subview = @extractSubView(model)
 
     if @rendered
       @$el.append(subview.render().el)
       @trigger('render')
 
-  remove: (model) ->
+  removeModel: (model) =>
     subviewToRemove = _.select(@subviews, (subview) ->
       subview.model.id is model.id
     )[0]
-    @subviews = _.without @subviews, subviewToRemove
 
-    subviewToRemove.$el.remove() if @rendered
+    if subviewToRemove
+      @subviews = _.without @subviews, subviewToRemove
+      subviewToRemove.remove() if @rendered
