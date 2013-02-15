@@ -14,7 +14,7 @@ describe('Amoeba.App', function() {
       spy = sinon.spy(Amoeba, 'App');
       Amoeba.App.start();
       spy.should.have.been.calledWithNew;
-      return spy.should.have.been.calledWith({});
+      return spy.should.have.been.calledWith(Amoeba.App.defaults);
     });
     return it('should start the Backbone history with the supported options', function() {
       var options;
@@ -24,7 +24,7 @@ describe('Amoeba.App', function() {
         silent: true,
         root: '/'
       };
-      Amoeba.App.start(options);
+      Amoeba.App.start(_.clone(options));
       return startStub.should.have.been.calledWith(options);
     });
   });

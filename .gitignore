@@ -9,3 +9,6 @@ pkg
 
 # node
 node_modules/
+
+# Rubymine
+/.idea
