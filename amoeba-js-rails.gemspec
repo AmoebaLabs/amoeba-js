@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amoeba Consulting, LLC."]
-  s.date = "2013-01-29"
+  s.date = "2013-02-19"
   s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -28,33 +28,69 @@ Gem::Specification.new do |s|
     "amoeba-js-rails.gemspec",
     "amoeba.js",
     "amoeba.min.js",
+    "docs/README.md.html",
+    "docs/README.rdoc.html",
+    "docs/assets/codo.css",
+    "docs/assets/codo.js",
+    "docs/assets/search_data.js",
+    "docs/class_index.html",
+    "docs/class_list.html",
+    "docs/classes/Amoeba/App.html",
+    "docs/classes/Amoeba/Collection/Container.html",
+    "docs/classes/Amoeba/Collection/Growable.html",
+    "docs/classes/Amoeba/Helpers.html",
+    "docs/classes/Amoeba/LookupContext.html",
+    "docs/classes/Amoeba/Model.html",
+    "docs/classes/Amoeba/Module.html",
+    "docs/classes/Amoeba/PaginatedCollection.html",
+    "docs/classes/Amoeba/Router.html",
+    "docs/classes/Amoeba/Template.html",
+    "docs/classes/Amoeba/View.html",
+    "docs/classes/Amoeba/View/Collection.html",
+    "docs/classes/Amoeba/View/PaginatedCollection.html",
+    "docs/classes/Amoeba/View/ScrollableCollection.html",
+    "docs/extra_list.html",
+    "docs/file_list.html",
+    "docs/files/amoeba/history.coffee.html",
+    "docs/files/amoeba/log.coffee.html",
+    "docs/files/amoeba/sync.coffee.html",
+    "docs/files/amoeba/views/paginated_collection.coffee.html",
+    "docs/index.html",
+    "docs/method_list.html",
+    "docs/mixin_list.html",
     "grunt.js",
     "lib/amoeba-js-rails.rb",
     "lib/amoeba-js-rails/rails/engine.rb",
     "package.json",
     "spec/coffeescripts/amoeba/app_spec.coffee",
+    "spec/coffeescripts/amoeba/collections/container_spec.coffee",
+    "spec/coffeescripts/amoeba/collections/growable_spec.coffee",
     "spec/coffeescripts/amoeba/helpers_spec.coffee",
     "spec/coffeescripts/amoeba/lib/lookup_context_spec.coffee",
     "spec/coffeescripts/amoeba/lib/module_spec.coffee",
-    "spec/coffeescripts/amoeba/paginated_collection_spec.coffee",
     "spec/coffeescripts/amoeba/router_spec.coffee",
     "spec/coffeescripts/amoeba/sync_spec.coffee",
     "spec/coffeescripts/amoeba/template_spec.coffee",
+    "spec/coffeescripts/amoeba/util_spec.coffee",
     "spec/coffeescripts/amoeba/view_spec.coffee",
     "spec/coffeescripts/amoeba/views/collection_spec.coffee",
+    "spec/coffeescripts/amoeba/views/paginated_collection_spec.coffee",
     "spec/coffeescripts/amoeba/views/scrollable_collection_spec.coffee",
     "spec/coffeescripts/lib/polyfills_spec.coffee",
     "spec/index.html",
     "spec/javascripts/amoeba/app_spec.js",
+    "spec/javascripts/amoeba/collections/container_spec.js",
+    "spec/javascripts/amoeba/collections/growable_spec.js",
     "spec/javascripts/amoeba/helpers_spec.js",
     "spec/javascripts/amoeba/lib/lookup_context_spec.js",
     "spec/javascripts/amoeba/lib/module_spec.js",
-    "spec/javascripts/amoeba/paginated_collection_spec.js",
     "spec/javascripts/amoeba/router_spec.js",
     "spec/javascripts/amoeba/sync_spec.js",
     "spec/javascripts/amoeba/template_spec.js",
+    "spec/javascripts/amoeba/util_spec.js",
     "spec/javascripts/amoeba/view_spec.js",
     "spec/javascripts/amoeba/views/collection_spec.js",
+    "spec/javascripts/amoeba/views/paginated_collection_spec.js",
     "spec/javascripts/amoeba/views/scrollable_collection_spec.js",
     "spec/javascripts/lib/polyfills_spec.js",
     "spec/javascripts/src/amoeba.js",
@@ -77,15 +113,20 @@ Gem::Specification.new do |s|
     "spec/support/sinon-chai.js",
     "src/amoeba.coffee",
     "src/amoeba/app.coffee",
+    "src/amoeba/collections/container.coffee",
+    "src/amoeba/collections/growable.coffee",
     "src/amoeba/helpers.coffee",
+    "src/amoeba/history.coffee",
     "src/amoeba/lib/lookup_context.coffee",
     "src/amoeba/lib/module.coffee",
-    "src/amoeba/paginated_collection.coffee",
+    "src/amoeba/log.coffee",
     "src/amoeba/router.coffee",
     "src/amoeba/sync.coffee",
     "src/amoeba/template.coffee",
+    "src/amoeba/util.coffee",
     "src/amoeba/view.coffee",
     "src/amoeba/views/collection.coffee",
+    "src/amoeba/views/paginated_collection.coffee",
     "src/amoeba/views/scrollable_collection.coffee",
     "src/lib/polyfills.js",
     "src/namespace.coffee",
@@ -103,16 +144,16 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails-backbone>, ["= 0.9.0"])
+      s.add_runtime_dependency(%q<rails-backbone>, ["= 0.9.10"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_development_dependency(%q<terminal-notifier>, ["= 1.4.2"])
     else
-      s.add_dependency(%q<rails-backbone>, ["= 0.9.0"])
+      s.add_dependency(%q<rails-backbone>, ["= 0.9.10"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_dependency(%q<terminal-notifier>, ["= 1.4.2"])
     end
   else
-    s.add_dependency(%q<rails-backbone>, ["= 0.9.0"])
+    s.add_dependency(%q<rails-backbone>, ["= 0.9.10"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     s.add_dependency(%q<terminal-notifier>, ["= 1.4.2"])
   end
