@@ -227,51 +227,62 @@ describe('Amoeba.Collection.Container', function() {
       container.pages[1].remove(removed);
       return container.pages[1].pluck('id').should.eql([2, 4]);
     });
-    describe('and there a next page', function() {
+    return describe('and there a next page', function() {
       var shifted;
       shifted = void 0;
-      beforeEach(function() {
-        container.resetPage(2, [
-          {
-            id: 3
-          }, {
-            id: 4
-          }
-        ]);
-        return shifted = container.pages[2].first();
-      });
-      it('should invalidate the pages behind that page', function() {
-        container.pages[1].remove(removed);
-        return container.pages[2].dirty.should.be["true"];
-      });
-      it('should remove the next page if empty after shift', function() {
-        container.pages[1].remove(removed);
-        container.pages[1].remove(container.pages[1].first());
-        return expect(container.pages[2]).to.be.undefined;
-      });
-      return it('should fetch the next page to try and fill in the removed model', function() {
-        container.pages[1].remove(removed);
-        container.pages[1].length.should.equal(2);
-        return container.pages[1].last().should.equal(shifted);
-      });
-    });
-    return describe('and there is no next page', function() {
-      beforeEach(function() {
-        return container.sync = function(method, model, options) {
-          return options.success([
+      describe('and it has models', function() {
+        beforeEach(function() {
+          container.resetPage(2, [
             {
               id: 3
             }, {
               id: 4
             }
           ]);
-        };
+          return shifted = container.pages[2].first();
+        });
+        it('should invalidate the pages behind that page', function() {
+          container.pages[1].remove(removed);
+          return container.pages[2].dirty.should.be["true"];
+        });
+        it('should remove the next page if empty after shift', function() {
+          container.pages[1].remove(removed);
+          container.pages[1].remove(container.pages[1].first());
+          return expect(container.pages[2]).to.be.undefined;
+        });
+        return it('should fetch the next page to try and fill in the removed model', function() {
+          container.pages[1].remove(removed);
+          container.pages[1].length.should.equal(2);
+          return container.pages[1].last().should.equal(shifted);
+        });
       });
-      return it('should shift over the next pages first model into the last spot of the page', function() {
-        container.pages[1].remove(removed);
-        container.pages[1].length.should.equal(2);
-        container.pages[1].last().id.should.equal(3);
-        return container.pages[2].first().id.should.equal(4);
+      describe('and it is empty', function() {
+        beforeEach(function() {
+          return container.resetPage(2, []);
+        });
+        return it('should remove the page', function() {
+          container.pages[1].remove(removed);
+          return expect(container.pages[2]).to.be.undefined;
+        });
+      });
+      return describe('and there is a next page remotely', function() {
+        beforeEach(function() {
+          return container.sync = function(method, model, options) {
+            return options.success([
+              {
+                id: 3
+              }, {
+                id: 4
+              }
+            ]);
+          };
+        });
+        return it('should shift over the next pages first model into the last spot of the page', function() {
+          container.pages[1].remove(removed);
+          container.pages[1].length.should.equal(2);
+          container.pages[1].last().id.should.equal(3);
+          return container.pages[2].first().id.should.equal(4);
+        });
       });
     });
   });

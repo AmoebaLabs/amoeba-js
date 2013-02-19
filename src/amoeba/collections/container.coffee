@@ -52,15 +52,16 @@ class Amoeba.Collection.Container extends Amoeba.Module
     else
       @fetch nextPage, success: =>
         @_shift(page, nextPage) if @pages[nextPage]
-    @remove(page) for page, collection of @pages when page > nextPage
+    @remove(oldPage) for oldPage, collection of @pages when oldPage > nextPage
     @
 
   _shift: (page, nextPage) ->
     collectionToShift = @pages[nextPage]
     shifted = collectionToShift.first()
 
-    @pages[page].add(shifted)
-    collectionToShift.remove(shifted, silent: true)
+    if shifted
+      collectionToShift.remove(shifted, silent: true)
+      @pages[page].add(shifted)
 
     if collectionToShift.length == 0
       @remove(nextPage)

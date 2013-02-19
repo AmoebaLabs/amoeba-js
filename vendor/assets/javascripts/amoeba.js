@@ -121,6 +121,16 @@
       return Amoeba.app.currentView = this.currentView = new view(options);
     };
 
+    Router.prototype.removeCurrentView = function() {
+      var _ref;
+      if ((_ref = this.currentView) != null) {
+        if (typeof _ref.remove === "function") {
+          _ref.remove();
+        }
+      }
+      return this.currentView = void 0;
+    };
+
     return Router;
 
   })(Backbone.Router);
@@ -409,11 +419,11 @@
       if (options == null) {
         options = {};
       }
-      this.removePage = __bind(this.removePage, this);
-
       this.removeModel = __bind(this.removeModel, this);
 
       this.addModel = __bind(this.addModel, this);
+
+      this.removePage = __bind(this.removePage, this);
 
       this.renderPage = __bind(this.renderPage, this);
 
@@ -421,9 +431,9 @@
       this.currentPage = options.page || 1;
       this.collectionView = options.collectionView || this.collectionView;
       this.container = options.container;
-      this.listenTo(this.container, 'add', this.addModel);
-      this.listenTo(this.container, 'remove', this.removeModel);
       this.listenTo(this.container, 'removePage', this.removePage);
+      this.listenTo(this.container, 'remove', this.removeModel);
+      this.listenTo(this.container, 'add', this.addModel);
       PaginatedCollection.__super__.constructor.call(this, options);
     }
 
@@ -478,15 +488,18 @@
       return this;
     };
 
-    PaginatedCollection.prototype.addModel = function(page, model) {};
-
-    PaginatedCollection.prototype.removeModel = function(page, model) {};
-
     PaginatedCollection.prototype.removePage = function(page) {
+      if (!this.pages[page]) {
+        return this;
+      }
       this.pages[page].view.remove();
       delete this.pages[page];
       return this;
     };
+
+    PaginatedCollection.prototype.addModel = function(page, model) {};
+
+    PaginatedCollection.prototype.removeModel = function(page, model) {};
 
     PaginatedCollection.prototype.createPage = function(page, collection) {
       return this.pages[page] = {
@@ -863,7 +876,7 @@ See the {#constructor} documentation for specific options.
     };
 
     Container.prototype.shift = function(page) {
-      var collection, nextPage, _ref,
+      var collection, nextPage, oldPage, _ref,
         _this = this;
       if (this.perPage && this.pages[page].length >= this.perPage) {
         return this;
@@ -881,10 +894,10 @@ See the {#constructor} documentation for specific options.
         });
       }
       _ref = this.pages;
-      for (page in _ref) {
-        collection = _ref[page];
-        if (page > nextPage) {
-          this.remove(page);
+      for (oldPage in _ref) {
+        collection = _ref[oldPage];
+        if (oldPage > nextPage) {
+          this.remove(oldPage);
         }
       }
       return this;
@@ -894,10 +907,12 @@ See the {#constructor} documentation for specific options.
       var collectionToShift, shifted;
       collectionToShift = this.pages[nextPage];
       shifted = collectionToShift.first();
-      this.pages[page].add(shifted);
-      collectionToShift.remove(shifted, {
-        silent: true
-      });
+      if (shifted) {
+        collectionToShift.remove(shifted, {
+          silent: true
+        });
+        this.pages[page].add(shifted);
+      }
       if (collectionToShift.length === 0) {
         return this.remove(nextPage);
       } else {

@@ -138,8 +138,6 @@ describe('Amoeba.View.PaginatedCollection', function() {
       return view.getPageEl(1).should.not.exist;
     });
   });
-  describe('#addModel');
-  describe('#removeModel');
   return describe('#createPage', function() {
     it('should render the view', function() {
       var spy;

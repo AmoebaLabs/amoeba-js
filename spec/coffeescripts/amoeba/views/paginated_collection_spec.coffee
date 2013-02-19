@@ -107,9 +107,6 @@ describe 'Amoeba.View.PaginatedCollection', ->
       spy.should.have.been.called
       view.getPageEl(1).should.not.exist
 
-  describe '#addModel'
-  describe '#removeModel'
-
   describe '#createPage', ->
     it 'should render the view', ->
       spy = sinon.spy(view, '_render')

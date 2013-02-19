@@ -148,34 +148,44 @@ describe 'Amoeba.Collection.Container', ->
 
     describe 'and there a next page', ->
       shifted = undefined
-      beforeEach ->
-        container.resetPage 2, [{id: 3}, {id: 4}]
-        shifted = container.pages[2].first()
 
-      it 'should invalidate the pages behind that page', ->
-        container.pages[1].remove(removed)
-        container.pages[2].dirty.should.be.true
+      describe 'and it has models', ->
+        beforeEach ->
+          container.resetPage 2, [{id: 3}, {id: 4}]
+          shifted = container.pages[2].first()
 
-      it 'should remove the next page if empty after shift', ->
-        container.pages[1].remove(removed)
-        container.pages[1].remove(container.pages[1].first())
-        expect(container.pages[2]).to.be.undefined
+        it 'should invalidate the pages behind that page', ->
+          container.pages[1].remove(removed)
+          container.pages[2].dirty.should.be.true
 
-      it 'should fetch the next page to try and fill in the removed model', ->
-        container.pages[1].remove(removed)
-        container.pages[1].length.should.equal 2
-        container.pages[1].last().should.equal shifted
+        it 'should remove the next page if empty after shift', ->
+          container.pages[1].remove(removed)
+          container.pages[1].remove(container.pages[1].first())
+          expect(container.pages[2]).to.be.undefined
 
-    describe 'and there is no next page', ->
-      beforeEach ->
-        container.sync = (method, model, options) ->
-          options.success([{id: 3}, {id: 4}])
+        it 'should fetch the next page to try and fill in the removed model', ->
+          container.pages[1].remove(removed)
+          container.pages[1].length.should.equal 2
+          container.pages[1].last().should.equal shifted
 
-      it 'should shift over the next pages first model into the last spot of the page', ->
-        container.pages[1].remove(removed)
-        container.pages[1].length.should.equal 2
-        container.pages[1].last().id.should.equal 3
-        container.pages[2].first().id.should.equal 4
+      describe 'and it is empty', ->
+        beforeEach ->
+          container.resetPage 2, []
+
+        it 'should remove the page', ->
+          container.pages[1].remove(removed)
+          expect(container.pages[2]).to.be.undefined
+
+      describe 'and there is a next page remotely', ->
+        beforeEach ->
+          container.sync = (method, model, options) ->
+            options.success([{id: 3}, {id: 4}])
+
+        it 'should shift over the next pages first model into the last spot of the page', ->
+          container.pages[1].remove(removed)
+          container.pages[1].length.should.equal 2
+          container.pages[1].last().id.should.equal 3
+          container.pages[2].first().id.should.equal 4
 
   describe '#toJSON', ->
     it 'should be an array of objects with the page number to collection as json', ->

@@ -8,9 +8,9 @@ class Amoeba.View.PaginatedCollection extends Amoeba.View
     @collectionView = options.collectionView or @collectionView
     @container = options.container
 
-    @listenTo(@container, 'add', @addModel)
-    @listenTo(@container, 'remove', @removeModel)
     @listenTo(@container, 'removePage', @removePage)
+    @listenTo(@container, 'remove', @removeModel)
+    @listenTo(@container, 'add', @addModel)
 
     super(options)
 
@@ -46,14 +46,16 @@ class Amoeba.View.PaginatedCollection extends Amoeba.View
       options.success?(page)
     @
 
-  addModel: (page, model) =>
-
-  removeModel: (page, model) =>
-
   removePage: (page) =>
+    return @ unless @pages[page]
+
     @pages[page].view.remove()
     delete @pages[page]
     @
+
+  addModel: (page, model) =>
+
+  removeModel: (page, model) =>
 
   createPage: (page, collection) ->
     @pages[page] =
