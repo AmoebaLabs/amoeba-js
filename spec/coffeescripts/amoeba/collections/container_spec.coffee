@@ -97,7 +97,7 @@ describe 'Amoeba.Collection.Container', ->
   describe '#fetch', ->
     beforeEach ->
       container.sync = (method, model, options) ->
-        options.success([])
+        options.success(model, [])
 
     it 'should always have an integer page', ->
       spy = sinon.spy(container, 'resetPage')
@@ -179,7 +179,7 @@ describe 'Amoeba.Collection.Container', ->
       describe 'and there is a next page remotely', ->
         beforeEach ->
           container.sync = (method, model, options) ->
-            options.success([{id: 3}, {id: 4}])
+            options.success(model, [{id: 3}, {id: 4}])
 
         it 'should shift over the next pages first model into the last spot of the page', ->
           container.pages[1].remove(removed)

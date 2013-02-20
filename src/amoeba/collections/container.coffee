@@ -83,14 +83,13 @@ class Amoeba.Collection.Container extends Amoeba.Module
       return options.success?(@pages[page], @, @pages[page].toJSON(), options)
 
     success = options.success
-    options.success = (resp) =>
+    options.success = (container, resp) =>
       collection = @resetPage(page, resp, options)
       success?(collection, @, resp, options)
 
     url = _.result(@, 'url')
 
     throw 'No url specified' unless url
-
     options.url = Amoeba.Util.appendQueryParam(url, "#{@urlPageQuery}=#{page}")
     @sync('read', @, options)
 

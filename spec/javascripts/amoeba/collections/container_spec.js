@@ -149,7 +149,7 @@ describe('Amoeba.Collection.Container', function() {
   describe('#fetch', function() {
     beforeEach(function() {
       return container.sync = function(method, model, options) {
-        return options.success([]);
+        return options.success(model, []);
       };
     });
     it('should always have an integer page', function() {
@@ -268,7 +268,7 @@ describe('Amoeba.Collection.Container', function() {
       return describe('and there is a next page remotely', function() {
         beforeEach(function() {
           return container.sync = function(method, model, options) {
-            return options.success([
+            return options.success(model, [
               {
                 id: 3
               }, {

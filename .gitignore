@@ -9,6 +9,7 @@ pkg
 
 # node
 node_modules/
+docs/
 
 # Rubymine
 /.idea
