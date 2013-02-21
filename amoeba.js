@@ -354,61 +354,6 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Amoeba.View.ScrollableCollection = (function(_super) {
-
-    __extends(ScrollableCollection, _super);
-
-    ScrollableCollection.prototype.loading = false;
-
-    ScrollableCollection.prototype.padding = 100;
-
-    function ScrollableCollection() {
-      this.onLoad = __bind(this.onLoad, this);
-
-      this.onScroll = __bind(this.onScroll, this);
-      ScrollableCollection.__super__.constructor.apply(this, arguments);
-      $(window).on("scroll." + this.cid, this.onScroll);
-    }
-
-    ScrollableCollection.prototype.onScroll = function() {
-      if (!this.rendered || this.loading) {
-        return true;
-      }
-      if (this.needsToLoad() && this.collection.hasMorePages()) {
-        this.loading = true;
-        return this.collection.fetchNextPage({
-          success: this.onLoad,
-          error: this.onLoad
-        });
-      }
-    };
-
-    ScrollableCollection.prototype.needsToLoad = function() {
-      var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
-      winHeight = $(window).height();
-      scrollTop = $(window).scrollTop();
-      winBottom = winHeight + scrollTop;
-      elHeight = this.$el.height();
-      elOffset = this.$el.offset().top;
-      elBottom = elHeight + elOffset;
-      return elBottom + this.padding < winBottom;
-    };
-
-    ScrollableCollection.prototype.onLoad = function() {
-      return this.loading = false;
-    };
-
-    return ScrollableCollection;
-
-  })(Amoeba.View.Collection);
-
-}).call(this);
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
   Amoeba.View.PaginatedCollection = (function(_super) {
 
     __extends(PaginatedCollection, _super);
@@ -465,7 +410,8 @@
     };
 
     PaginatedCollection.prototype.refresh = function(page, options) {
-      var _this = this;
+      var success,
+        _this = this;
       if (page == null) {
         page = this.currentPage;
       }
@@ -478,13 +424,15 @@
           this.removePage(page);
         }
       }
-      this.container.fetch(page, {
+      success = options.success;
+      _.extend(options, {
         silent: true,
         success: function(collection) {
           _this.renderPage(page, collection);
-          return typeof options.success === "function" ? options.success(page) : void 0;
+          return typeof success === "function" ? success(page) : void 0;
         }
       });
+      this.container.fetch(page, options);
       return this;
     };
 
@@ -518,6 +466,61 @@
     return PaginatedCollection;
 
   })(Amoeba.View);
+
+}).call(this);
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Amoeba.View.ScrollableCollection = (function(_super) {
+
+    __extends(ScrollableCollection, _super);
+
+    ScrollableCollection.prototype.loading = false;
+
+    ScrollableCollection.prototype.padding = 100;
+
+    function ScrollableCollection() {
+      this.onLoad = __bind(this.onLoad, this);
+
+      this.onScroll = __bind(this.onScroll, this);
+      ScrollableCollection.__super__.constructor.apply(this, arguments);
+      $(window).on("scroll." + this.cid, this.onScroll);
+    }
+
+    ScrollableCollection.prototype.onScroll = function() {
+      if (!this.rendered || this.loading) {
+        return true;
+      }
+      if (this.needsToLoad() && this.collection.hasMorePages()) {
+        this.loading = true;
+        return this.collection.fetchNextPage({
+          success: this.onLoad,
+          error: this.onLoad
+        });
+      }
+    };
+
+    ScrollableCollection.prototype.needsToLoad = function() {
+      var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
+      winHeight = $(window).height();
+      scrollTop = $(window).scrollTop();
+      winBottom = winHeight + scrollTop;
+      elHeight = this.$el.height();
+      elOffset = this.$el.offset().top;
+      elBottom = elHeight + elOffset;
+      return elBottom + this.padding < winBottom;
+    };
+
+    ScrollableCollection.prototype.onLoad = function() {
+      return this.loading = false;
+    };
+
+    return ScrollableCollection;
+
+  })(Amoeba.View.Collection);
 
 }).call(this);
 
@@ -818,9 +821,6 @@ See the {#constructor} documentation for specific options.
 
     function Container() {
       this.pages = {};
-      if (this.model) {
-        this.collection.prototype.model = this.model;
-      }
       this.initialize.apply(this, arguments);
     }
 
@@ -847,7 +847,7 @@ See the {#constructor} documentation for specific options.
         if (this.model) {
           collection.model = this.model;
         }
-        collection.reset(this.parse(resp));
+        collection.reset(this.parse(resp), options);
         collection.on('all', this._onCollectionEvent, this);
         this.pages[page] = collection;
       }

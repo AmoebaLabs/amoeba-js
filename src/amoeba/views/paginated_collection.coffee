@@ -41,9 +41,12 @@ class Amoeba.View.PaginatedCollection extends Amoeba.View
       @pages[page].rendered = false
       @removePage(page) if @pages[page].collection.dirty
 
-    @container.fetch page, silent: true, success: (collection) =>
+    success = options.success
+    _.extend options, silent: true, success: (collection) =>
       @renderPage(page, collection)
-      options.success?(page)
+      success?(page)
+
+    @container.fetch(page, options)
     @
 
   removePage: (page) =>

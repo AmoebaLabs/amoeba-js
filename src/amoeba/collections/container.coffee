@@ -5,9 +5,6 @@ class Amoeba.Collection.Container extends Amoeba.Module
 
   constructor: ->
     @pages = {}
-    if @model
-      @collection::model = @model
-
     @initialize.apply(@, arguments)
 
   initialize: ->
@@ -25,7 +22,7 @@ class Amoeba.Collection.Container extends Amoeba.Module
       collection = new @collection()
       collection.page = page
       collection.model = @model if @model
-      collection.reset(@parse(resp))
+      collection.reset(@parse(resp), options)
       collection.on('all', @_onCollectionEvent, @)
       @pages[page] = collection
     @pages[page].dirty = false
