@@ -74,6 +74,7 @@ class Amoeba.Collection.Container extends Amoeba.Module
     @
 
   fetch: (page, options = {}) ->
+    options = _.clone(options)
     page = parseInt(page)
 
     if @pages[page] and not @pages[page].dirty and not options.force

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amoeba Consulting, LLC."]
-  s.date = "2013-02-19"
+  s.date = "2013-02-21"
   s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -28,36 +28,6 @@ Gem::Specification.new do |s|
     "amoeba-js-rails.gemspec",
     "amoeba.js",
     "amoeba.min.js",
-    "docs/README.md.html",
-    "docs/README.rdoc.html",
-    "docs/assets/codo.css",
-    "docs/assets/codo.js",
-    "docs/assets/search_data.js",
-    "docs/class_index.html",
-    "docs/class_list.html",
-    "docs/classes/Amoeba/App.html",
-    "docs/classes/Amoeba/Collection/Container.html",
-    "docs/classes/Amoeba/Collection/Growable.html",
-    "docs/classes/Amoeba/Helpers.html",
-    "docs/classes/Amoeba/LookupContext.html",
-    "docs/classes/Amoeba/Model.html",
-    "docs/classes/Amoeba/Module.html",
-    "docs/classes/Amoeba/PaginatedCollection.html",
-    "docs/classes/Amoeba/Router.html",
-    "docs/classes/Amoeba/Template.html",
-    "docs/classes/Amoeba/View.html",
-    "docs/classes/Amoeba/View/Collection.html",
-    "docs/classes/Amoeba/View/PaginatedCollection.html",
-    "docs/classes/Amoeba/View/ScrollableCollection.html",
-    "docs/extra_list.html",
-    "docs/file_list.html",
-    "docs/files/amoeba/history.coffee.html",
-    "docs/files/amoeba/log.coffee.html",
-    "docs/files/amoeba/sync.coffee.html",
-    "docs/files/amoeba/views/paginated_collection.coffee.html",
-    "docs/index.html",
-    "docs/method_list.html",
-    "docs/mixin_list.html",
     "grunt.js",
     "lib/amoeba-js-rails.rb",
     "lib/amoeba-js-rails/rails/engine.rb",
