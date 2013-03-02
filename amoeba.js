@@ -10,9 +10,11 @@
 (function() {
 
   Amoeba.log = function(ln) {
-    if (Amoeba.debug) {
-      return console.log(ln);
+    if (!Amoeba.DEBUG) {
+      return false;
     }
+    console.log(ln);
+    return true;
   };
 
 }).call(this);
@@ -216,7 +218,7 @@
       if (options == null) {
         options = {};
       }
-      this.locals = options.locals;
+      this.locals = options.locals || {};
       this.parent = options.parent;
       if (this.template) {
         this.template = new Amoeba.Template(this.template);
@@ -354,61 +356,6 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Amoeba.View.ScrollableCollection = (function(_super) {
-
-    __extends(ScrollableCollection, _super);
-
-    ScrollableCollection.prototype.loading = false;
-
-    ScrollableCollection.prototype.padding = 100;
-
-    function ScrollableCollection() {
-      this.onLoad = __bind(this.onLoad, this);
-
-      this.onScroll = __bind(this.onScroll, this);
-      ScrollableCollection.__super__.constructor.apply(this, arguments);
-      $(window).on("scroll." + this.cid, this.onScroll);
-    }
-
-    ScrollableCollection.prototype.onScroll = function() {
-      if (!this.rendered || this.loading) {
-        return true;
-      }
-      if (this.needsToLoad() && this.collection.hasMorePages()) {
-        this.loading = true;
-        return this.collection.fetchNextPage({
-          success: this.onLoad,
-          error: this.onLoad
-        });
-      }
-    };
-
-    ScrollableCollection.prototype.needsToLoad = function() {
-      var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
-      winHeight = $(window).height();
-      scrollTop = $(window).scrollTop();
-      winBottom = winHeight + scrollTop;
-      elHeight = this.$el.height();
-      elOffset = this.$el.offset().top;
-      elBottom = elHeight + elOffset;
-      return elBottom + this.padding < winBottom;
-    };
-
-    ScrollableCollection.prototype.onLoad = function() {
-      return this.loading = false;
-    };
-
-    return ScrollableCollection;
-
-  })(Amoeba.View.Collection);
-
-}).call(this);
-
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
   Amoeba.View.PaginatedCollection = (function(_super) {
 
     __extends(PaginatedCollection, _super);
@@ -521,6 +468,61 @@
     return PaginatedCollection;
 
   })(Amoeba.View);
+
+}).call(this);
+
+(function() {
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Amoeba.View.ScrollableCollection = (function(_super) {
+
+    __extends(ScrollableCollection, _super);
+
+    ScrollableCollection.prototype.loading = false;
+
+    ScrollableCollection.prototype.padding = 100;
+
+    function ScrollableCollection() {
+      this.onLoad = __bind(this.onLoad, this);
+
+      this.onScroll = __bind(this.onScroll, this);
+      ScrollableCollection.__super__.constructor.apply(this, arguments);
+      $(window).on("scroll." + this.cid, this.onScroll);
+    }
+
+    ScrollableCollection.prototype.onScroll = function() {
+      if (!this.rendered || this.loading) {
+        return true;
+      }
+      if (this.needsToLoad() && this.collection.hasMorePages()) {
+        this.loading = true;
+        return this.collection.fetchNextPage({
+          success: this.onLoad,
+          error: this.onLoad
+        });
+      }
+    };
+
+    ScrollableCollection.prototype.needsToLoad = function() {
+      var elBottom, elHeight, elOffset, scrollTop, winBottom, winHeight;
+      winHeight = $(window).height();
+      scrollTop = $(window).scrollTop();
+      winBottom = winHeight + scrollTop;
+      elHeight = this.$el.height();
+      elOffset = this.$el.offset().top;
+      elBottom = elHeight + elOffset;
+      return elBottom + this.padding < winBottom;
+    };
+
+    ScrollableCollection.prototype.onLoad = function() {
+      return this.loading = false;
+    };
+
+    return ScrollableCollection;
+
+  })(Amoeba.View.Collection);
 
 }).call(this);
 
@@ -839,6 +841,8 @@ See the {#constructor} documentation for specific options.
       if (options == null) {
         options = {};
       }
+      options = _.clone(options);
+      options.parse = true;
       if (this.pages[page]) {
         this.pages[page].reset(this.parse(resp), options);
       } else {

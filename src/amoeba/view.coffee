@@ -1,6 +1,6 @@
 class Amoeba.View extends Backbone.View
   constructor: (options = {}) ->
-    @locals = options.locals
+    @locals = options.locals or {}
     @parent = options.parent
     @template = new Amoeba.Template(@template) if @template
     @helpers = Amoeba.app.helpers

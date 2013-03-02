@@ -1,2 +1,4 @@
 Amoeba.log = (ln) ->
-  console.log(ln) if Amoeba.debug
+  return false unless Amoeba.DEBUG
+  console.log(ln)
+  true

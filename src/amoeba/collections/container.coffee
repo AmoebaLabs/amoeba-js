@@ -16,6 +16,8 @@ class Amoeba.Collection.Container extends Amoeba.Module
     resp
 
   resetPage: (page, resp, options = {}) ->
+    options = _.clone(options)
+    options.parse = true
     if @pages[page]
       @pages[page].reset(@parse(resp), options)
     else
