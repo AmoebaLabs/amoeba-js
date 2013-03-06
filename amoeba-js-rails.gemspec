@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Amoeba Consulting, LLC."]
-  s.date = "2013-03-02"
+  s.date = "2013-03-06"
   s.description = "Amoeba.js is a lightweight JS MVC framework extending Backbone JS giving some extra help."
   s.email = "sayhi@amoe.ba"
   s.extra_rdoc_files = [
@@ -102,7 +102,8 @@ Gem::Specification.new do |s|
     "src/namespace.coffee",
     "vendor/assets/javascripts/amoeba-js.js",
     "vendor/assets/javascripts/amoeba.js",
-    "vendor/assets/javascripts/amoeba.min.js"
+    "vendor/assets/javascripts/backbone.js",
+    "vendor/assets/javascripts/underscore.js"
   ]
   s.homepage = "http://github.com/AmoebaConsulting/amoeba-js"
   s.licenses = ["MIT"]
@@ -114,16 +115,13 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rails-backbone>, ["= 0.9.10"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_development_dependency(%q<terminal-notifier>, ["= 1.4.2"])
     else
-      s.add_dependency(%q<rails-backbone>, ["= 0.9.10"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
       s.add_dependency(%q<terminal-notifier>, ["= 1.4.2"])
     end
   else
-    s.add_dependency(%q<rails-backbone>, ["= 0.9.10"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
     s.add_dependency(%q<terminal-notifier>, ["= 1.4.2"])
   end
