@@ -799,7 +799,7 @@ See the {#constructor} documentation for specific options.
     return keys;
   });
 
-  Function.bind || (Function.bind = function(ctx){
+  Function.prototype.bind || (Function.prototype.bind = function(ctx){
     var fn = this;
     return function(){
       return fn.apply(ctx, arguments);
