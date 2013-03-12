@@ -1,4 +1,4 @@
-#= require_tree ./lib
+#= require ./lib/polyfills
 #= require ./namespace
 #= require amoeba/log
 #= require amoeba/util
